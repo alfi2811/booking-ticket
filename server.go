@@ -18,5 +18,5 @@ func main() {
 func getUser(c echo.Context) error {
 	// User ID from path `users/:id`
 	id := c.Param("id")
-	return c.String(http.StatusOK, "nama anda: "+id)
+	return c.String(http.StatusOK, "nama kamu: "+id)
 }
