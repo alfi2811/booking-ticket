@@ -1,0 +1,692 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Inventory API
+  # put the contact info for your development or API team
+  contact:
+    email: you@your-company.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: auth
+  description: Operations available to regular users
+- name: users
+  description: Operations available to regular users
+- name: cinema
+  description: Operations available to regular users
+- name: movie
+  description: Operations available to regular users
+- name: schedule
+  description: Operations available to regular users
+
+paths:
+  /users:
+    get:
+      tags:
+      - users
+      summary: list users
+      operationId: listUsers
+      description: |
+        By accessing this, will show list of users in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/schemaUser'
+        500:
+          description: Internal server error
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: login for users
+      operationId: loginUsers
+      description: |
+        for accessing to booking ticket
+      produces:
+      - application/json      
+      parameters:
+      - in: body
+        name: userData
+        description: user data to check
+        schema:
+          $ref: '#/definitions/requestUserLogin'
+      responses:
+        200:
+          description: success to login as user
+          schema:            
+            $ref: '#/definitions/responseUserLogin'
+        500:
+          description: Internal server error  
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: registration for user
+      operationId: registUser
+      description: |
+        By accessing this, user data will add in table users
+      produces:
+      - application/json      
+      parameters:
+      - in: body
+        name: user
+        description: user data to add
+        schema:
+          $ref: '#/definitions/requestRegister'
+      responses:
+        200:
+          description: success response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseRegister'
+        500:
+          description: Internal server error  
+  /cinema:
+    get:
+      tags:
+      - cinema
+      summary: list cinema
+      operationId: listCinema
+      description: |
+        By accessing this, will show list of cinema in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseCinema'
+        500:
+          description: Internal server error
+    post:
+      tags:
+      - cinema
+      summary: list cinema
+      operationId: addCinema
+      description: |
+        By accessing this, will show list of cinema in booking ticket
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: user data to add
+        schema:
+          $ref: '#/definitions/requestCinemaAdd'
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseCinemaAdd'
+        500:
+          description: Internal server error  
+  /cinema/{cinemaid}:
+    get:
+      tags:
+      - cinema
+      summary: list movie in one cinema
+      operationId: listCinemaDetail
+      description: |
+        By accessing this, will show list of cinema in booking ticket
+      produces:
+      - application/json      
+      parameters:
+        - in: path
+          name: cinemaId
+          description: example =  /cinema/2
+          required: true
+          type: string
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseCinemaDetail'
+        500:
+          description: Internal server error    
+  /movie:
+    get:
+      tags:
+      - movie
+      summary: list movie
+      operationId: listMovie
+      description: |
+        By accessing this, will show list of movie in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseMovie'
+        500:
+          description: Internal server error
+    post:
+      tags:
+      - movie
+      summary: add movie
+      operationId: addMovie
+      description: |
+        By accessing this, will show add movie in booking ticket
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: user data to add
+        schema:
+          $ref: '#/definitions/requestMovieAdd'
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseMovieAdd'
+        500:
+          description: Internal server error
+  /movie/{movieid}:
+    get:
+      tags:
+      - movie
+      summary: detail one movie
+      operationId: detailMovie
+      description: |
+        By accessing this, will show detail of movie in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/schemaDetailMovie'
+        500:
+          description: Internal server error    
+  /schedule:
+    get:
+      tags:
+      - schedule
+      summary: list schedule
+      operationId: listSchedule
+      description: |
+        By accessing this, will show list of schedule in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/schemaSchedule'
+        500:
+          description: Internal server error
+    post:
+      tags:
+      - schedule
+      summary: list cinema
+      operationId: listCinema
+      description: |
+        By accessing this, will show list of cinema in booking ticket
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: user data to add
+        schema:
+          $ref: '#/definitions/requestScheduleAdd'
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseScheduleAdd'
+        500:
+          description: Internal server error
+  /booking:
+    get:
+      tags:
+      - schedule
+      summary: list booking
+      operationId: listBooking
+      description: |
+        By accessing this, will show list of booking in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: success get list of booking in booking ticket
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/schemaBooking'
+        500:
+          description: Internal server error
+    post:
+      tags:
+      - schedule
+      summary: add booking ticket
+      operationId: addBooking
+      description: |
+        By accessing this, will add booking ticket to the table
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: user's booking data 
+        schema:
+          $ref: '#/definitions/requestBookingAdd'
+      responses:
+        200:
+          description: response success to add booking data
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/responseBookingAdd'
+        500:
+          description: Internal server error
+
+definitions:  
+  schemaUser:
+    type: object
+    required:    
+    - email
+    - password
+    - fullname
+    - gender
+    - phone
+    properties:      
+      email:
+        type: string
+        example: alfi@gmail.com      
+      fullname:
+        type: string
+        example: Muhammad Alfi Syahri
+      gender:
+        type: string
+        example: Laki - Laki
+      phone:
+        type: string
+        example: '081270826621'
+  requestRegister:
+    type: object
+    required:    
+    - email
+    - password
+    - fullname
+    - gender
+    - phone
+    properties:      
+      email:
+        type: string
+        example: alfi@gmail.com
+      password:
+        type: string
+        example: al28Sep2118
+      fullname:
+        type: string
+        example: Muhammad Alfi Syahri
+      gender:
+        type: string
+        example: Laki - Laki
+      phone:
+        type: string
+        example: '081270826621'
+  responseRegister:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data User Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaUser'
+  requestUserLogin:
+    type: object
+    required:    
+    - email
+    - password    
+    properties:      
+      email:
+        type: string
+        example: alfi@gmail.com
+      password:
+        type: string
+        example: al28Sep2118      
+  responseUserLogin:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Login Success
+      token:
+        type: string
+        example: 8270128732niua8dan2i2n28ndih  
+  responseCinema:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: List Data Cinema
+      data:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: Grand Indonesia
+  schemaCinema:
+    type: object    
+    properties:      
+      email:
+        type: string
+        example: aeon@gmail.com      
+      name:
+        type: string
+        example: AEON Mall
+      location:
+        type: string
+        example: Jl. Kesayangan
+      maps:
+        type: string
+        example: maps.google.com/widjwndwi
+      notlp:
+        type: string
+        example: '081270826621'
+  requestCinemaAdd:
+    type: object
+    required:    
+    - email
+    - password
+    - name
+    - location
+    - maps
+    - phone
+    properties:      
+      email:
+        type: string
+        example: aeon@gmail.com
+      password:
+        type: string
+        example: al28Sep2118
+      name:
+        type: string
+        example: AEON Mall
+      location:
+        type: string
+        example: Jl. Kesayangan
+      maps:
+        type: string
+        example: maps.google.com/widjwndwi
+      phone:
+        type: string
+        example: '081270826621'
+  responseCinemaAdd:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data Cinema Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaCinema'
+  responseCinemaDetail:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data Cinema Berhasil Ditambahkan
+      data:
+        type: object    
+        properties:
+          cinema:
+            $ref: '#/definitions/schemaCinema'
+          dates:
+            type: array
+            items:              
+              type: object    
+              properties:
+                id:
+                  type: integer
+                  example: 40000
+                date:
+                  type: string
+                  example: '2021-02-01'
+                price:
+                  type: integer
+                  example: 1
+                movies:
+                  type: array
+                  items:              
+                    type: object    
+                    properties:
+                      info:
+                        $ref: '#/definitions/schemaMovie'
+                      schedule:
+                        type: array
+                        items:              
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            times_movie:
+                              type: string
+                              example: '13.00'
+  responseMovie:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: List Data Cinema
+      data:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          title:
+            type: string
+            example: Shang Chi
+          poster:
+            type: string
+            example: link_cdn
+  schemaMovie:
+    type: object
+    required:    
+    - title
+    - poster
+    - release_date
+    - movie_trailer
+    - players
+    - status
+    properties:      
+      title:
+        type: string
+        example: Spiderman Far From Home
+      poster:
+        type: string
+        example: link
+      release_date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      movie_trailer:
+        type: string
+        example: youtube.com/jwjndwjndw
+      players:
+        type: string
+        example: Tom Holland, Zendaya, Chris Evans
+      status:
+        type: integer
+        example: 1
+  requestMovieAdd:
+    type: object
+    required:    
+    - title
+    - poster
+    - release_date
+    - movie_trailer
+    - players
+    - status
+    properties:      
+      title:
+        type: string
+        example: Spiderman Far From Home
+      poster:
+        type: string
+        example: link
+      release_date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      movie_trailer:
+        type: string
+        example: youtube.com/jwjndwjndw
+      players:
+        type: string
+        example: Tom Holland, Zendaya, Chris Evans
+      status:
+        type: integer
+        example: 1
+  responseMovieAdd:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data Cinema Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaMovie'
+  schemaSchedule:
+    type: object
+    required:    
+    - movie_id
+    - cinema_id
+    - day
+    - price    
+    properties:
+      movie_id:
+        type: integer
+        example: 1
+      cinema_id:
+        type: integer
+        example: 2
+      day:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      price:
+        type: integer
+        example: 50000
+  requestScheduleAdd:
+    $ref: '#/definitions/schemaSchedule'
+  responseScheduleAdd:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data Schedule Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaSchedule'
+  schemaBooking:
+    type: object    
+    properties:
+      user_id:
+        type: integer
+        example: 1
+      time_schedule_id:
+        type: integer
+        example: 2
+      no_seat:
+        type: string
+        example: H14
+      qty:
+        type: integer
+        example: 1
+      total_price:
+        type: integer
+        example: 40000
+  requestBookingAdd:
+    type: object
+    required:    
+    - user_id
+    - time_schedule_id
+    - no_seat
+    - qty
+    - total_price  
+    properties:
+      user_id:
+        type: integer
+        example: 1
+      time_schedule_id:
+        type: integer
+        example: 2
+      no_seat:
+        type: string
+        example: H14
+      qty:
+        type: integer
+        example: 1
+      total_price:
+        type: integer
+        example: 40000
+  responseBookingeAdd:
+    type: object    
+    properties:
+      code:
+        type: string
+        example: 200
+      message:
+        type: string
+        example: Data Booking Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaBooking'
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /alfi2811/booking-ticket/1.0.0
+schemes:
+ - https
