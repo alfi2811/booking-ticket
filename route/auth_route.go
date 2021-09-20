@@ -7,6 +7,8 @@ import (
 )
 
 func AuthRoute(auth *echo.Group) {
-	auth.POST("auth/register", controllers.RegisterController)
-	auth.POST("auth/login", controllers.LoginController)
+	auth.POST("auth/register/user", controllers.RegisterController)
+	auth.POST("auth/login/user", controllers.LoginController)
+	auth.POST("auth/register/admin", controllers.RegisterAdminController)
+	auth.POST("auth/login/admin", controllers.LoginAdminController)
 }
