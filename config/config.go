@@ -1,7 +1,7 @@
 package config
 
 import (
-	"booking-ticket/model"
+	"booking-ticket/models/users"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -20,5 +20,5 @@ func InitDB() {
 }
 
 func initMigrate() {
-	DB.AutoMigrate(&model.User{})
+	DB.AutoMigrate(&users.User{})
 }
