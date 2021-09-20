@@ -7,3 +7,9 @@ type AuthRegisterUser struct {
 	Gender   string `json:"gender"`
 	Phone    string `json:"phone"`
 }
+
+type AuthRegisterAdmin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Fullname string `json:"fullname"`
+}
