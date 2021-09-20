@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 	"booking-ticket/models/users"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 func GetUserController(c echo.Context) error {
@@ -37,7 +39,7 @@ func GetUserDetailController(c echo.Context) error {
 
 	result := config.DB.First(&users, id)
 	if result.Error != nil {
-		if result.Error.Error() == "record not found" {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return c.JSON(http.StatusBadRequest, response.BaseResponse{
 				Code:    http.StatusBadRequest,
 				Message: result.Error.Error(),
