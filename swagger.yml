@@ -317,7 +317,7 @@ definitions:
     - password
     - fullname
     - gender
-    - notlp
+    - phone
     properties:      
       email:
         type: string
@@ -328,9 +328,9 @@ definitions:
       gender:
         type: string
         example: Laki - Laki
-      notlp:
+      phone:
         type: string
-        example: 081270826621
+        example: '081270826621'
   requestRegister:
     type: object
     required:    
@@ -338,7 +338,7 @@ definitions:
     - password
     - fullname
     - gender
-    - notlp
+    - phone
     properties:      
       email:
         type: string
@@ -352,9 +352,9 @@ definitions:
       gender:
         type: string
         example: Laki - Laki
-      notlp:
+      phone:
         type: string
-        example: 081270826621
+        example: '081270826621'
   responseRegister:
     type: object    
     properties:
@@ -425,7 +425,7 @@ definitions:
         example: maps.google.com/widjwndwi
       notlp:
         type: string
-        example: 081270826621
+        example: '081270826621'
   requestCinemaAdd:
     type: object
     required:    
@@ -434,7 +434,7 @@ definitions:
     - name
     - location
     - maps
-    - notlp
+    - phone
     properties:      
       email:
         type: string
@@ -451,9 +451,9 @@ definitions:
       maps:
         type: string
         example: maps.google.com/widjwndwi
-      notlp:
+      phone:
         type: string
-        example: 081270826621
+        example: '081270826621'
   responseCinemaAdd:
     type: object    
     properties:
