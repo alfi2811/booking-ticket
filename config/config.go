@@ -2,6 +2,7 @@ package config
 
 import (
 	"booking-ticket/models/admins"
+	"booking-ticket/models/cinemas"
 	"booking-ticket/models/movies"
 	"booking-ticket/models/users"
 
@@ -25,4 +26,5 @@ func initMigrate() {
 	DB.AutoMigrate(&users.User{})
 	DB.AutoMigrate(&admins.Admin{})
 	DB.AutoMigrate(&movies.Movie{})
+	DB.AutoMigrate(&cinemas.Cinema{})
 }
