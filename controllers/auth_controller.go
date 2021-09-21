@@ -45,7 +45,12 @@ func LoginController(c echo.Context) error {
 		})
 	}
 
-	userResponse := users.UserResponse{userDB.ID, userDB.Email, userDB.Fullname, token}
+	userResponse := users.UserResponse{
+		ID:       userDB.ID,
+		Email:    userDB.Email,
+		Fullname: userDB.Fullname,
+		Token:    token,
+	}
 
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
@@ -185,8 +190,12 @@ func LoginAdminController(c echo.Context) error {
 		})
 	}
 
-	adminResponse := admins.AdminResponse{adminDB.ID, adminDB.Email, adminDB.Fullname, token}
-
+	adminResponse := admins.AdminResponse{
+		ID:       adminDB.ID,
+		Email:    adminDB.Email,
+		Fullname: adminDB.Fullname,
+		Token:    token,
+	}
 	return c.JSON(http.StatusOK, response.BaseResponse{
 		Code:    http.StatusOK,
 		Message: "Login Successfull",
