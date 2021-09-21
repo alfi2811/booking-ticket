@@ -13,6 +13,7 @@ func New() *echo.Echo {
 	m.LogMiddleware(e)
 	UserRoute(apiV1)
 	MovieRoute(apiV1)
+	CinemaRoute(apiV1)
 
 	return e
 }
