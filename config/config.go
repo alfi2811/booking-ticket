@@ -4,6 +4,7 @@ import (
 	"booking-ticket/models/admins"
 	"booking-ticket/models/cinemas"
 	"booking-ticket/models/movies"
+	"booking-ticket/models/schedules"
 	"booking-ticket/models/users"
 
 	"gorm.io/driver/mysql"
@@ -27,4 +28,5 @@ func initMigrate() {
 	DB.AutoMigrate(&admins.Admin{})
 	DB.AutoMigrate(&movies.Movie{})
 	DB.AutoMigrate(&cinemas.Cinema{})
+	DB.AutoMigrate(&schedules.Schedule{})
 }
