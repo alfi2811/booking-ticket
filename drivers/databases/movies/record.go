@@ -2,6 +2,7 @@ package movies
 
 import (
 	"booking-ticket/business/movies"
+	"booking-ticket/drivers/databases/schedules"
 	"time"
 )
 
@@ -16,6 +17,7 @@ type Movies struct {
 	Status       int
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	Schedule     []schedules.Schedules `gorm:"foreignKey:MovieId;references:ID"`
 }
 type UsersArr []Movies
 

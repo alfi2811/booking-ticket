@@ -2,6 +2,7 @@ package cinemas
 
 import (
 	"booking-ticket/business/cinemas"
+	"booking-ticket/drivers/databases/schedules"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type Cinemas struct {
 	Status    int
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Schedule  []schedules.Schedules `gorm:"foreignKey:CinemaId;references:ID"`
 }
 
 func (cinema *Cinemas) ToDomain() cinemas.Domain {
