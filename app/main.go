@@ -2,12 +2,18 @@ package main
 
 import (
 	"booking-ticket/app/routes"
+	_cinemaUsecase "booking-ticket/business/cinemas"
+	_movieUsecase "booking-ticket/business/movies"
 	_userUsecase "booking-ticket/business/users"
+	_cinemaController "booking-ticket/controllers/cinemas"
+	_movieController "booking-ticket/controllers/movies"
 	_userController "booking-ticket/controllers/users"
 	_userdb "booking-ticket/drivers/databases/users"
 	_mysqlDriver "booking-ticket/drivers/mysql"
 	"time"
 
+	_cinemaRepository "booking-ticket/drivers/databases/cinemas"
+	_movieRepository "booking-ticket/drivers/databases/movies"
 	_userRepository "booking-ticket/drivers/databases/users"
 
 	"log"
@@ -30,6 +36,8 @@ func init() {
 
 func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_userdb.Users{})
+	db.AutoMigrate(&_movieRepository.Movies{})
+	db.AutoMigrate(&_cinemaRepository.Cinemas{})
 }
 
 func main() {
@@ -52,11 +60,23 @@ func main() {
 	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext)
 	userController := _userController.NewUserController(userUseCase)
 
+	movieRepository := _movieRepository.NewMysqlMovieRepository(Conn)
+	movieUseCase := _movieUsecase.NewMovieUsecase(movieRepository, timeoutContext)
+	movieController := _movieController.NewMovieController(movieUseCase)
+
+	cinemaRepository := _cinemaRepository.NewMysqlCinemaRepository(Conn)
+	cinemaUseCase := _cinemaUsecase.NewCinemaUsecase(cinemaRepository, timeoutContext)
+	cinemaController := _cinemaController.NewCinemaController(cinemaUseCase)
+
 	routesInit := routes.ControllerList{
-		UserController: *userController,
+		UserController:   *userController,
+		MovieController:  *movieController,
+		CinemaController: *cinemaController,
 	}
 
-	routesInit.RouteLogin(e)
+	routesInit.RouteUsers(e)
+	routesInit.RouteMovies(e)
+	routesInit.RouteCinemas(e)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 
 }
