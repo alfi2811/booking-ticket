@@ -20,8 +20,10 @@ type Domain struct {
 
 type Usecase interface {
 	AddMovie(ctx context.Context, domain Domain) (Domain, error)
+	ListMovie(ctx context.Context) ([]Domain, error)
 }
 
 type Repository interface {
 	AddMovie(ctx context.Context, domain Domain) (Domain, error)
+	ListMovie(ctx context.Context) ([]Domain, error)
 }

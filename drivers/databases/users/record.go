@@ -16,7 +16,6 @@ type Users struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
-type UsersArr []Users
 
 func (user *Users) ToDomain() users.Domain {
 	return users.Domain{
@@ -29,6 +28,13 @@ func (user *Users) ToDomain() users.Domain {
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 	}
+}
+func ToListDomain(data []Users) (result []users.Domain) {
+	result = []users.Domain{}
+	for _, user := range data {
+		result = append(result, user.ToDomain())
+	}
+	return
 }
 
 func FromDomain(domain users.Domain) Users {

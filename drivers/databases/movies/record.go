@@ -36,17 +36,22 @@ func (movie *Movies) ToDomain() movies.Domain {
 	}
 }
 
+func ToListDomain(data []Movies) (result []movies.Domain) {
+	result = []movies.Domain{}
+	for _, movie := range data {
+		result = append(result, movie.ToDomain())
+	}
+	return
+}
+
 func FromDomain(domain movies.Domain) Movies {
 	return Movies{
-		ID:           domain.ID,
 		Title:        domain.Title,
 		Poster:       domain.Poster,
 		ReleaseDate:  domain.ReleaseDate,
 		Duration:     domain.Duration,
 		MovieTrailer: domain.MovieTrailer,
 		Players:      domain.Players,
-		Status:       domain.Status,
-		CreatedAt:    domain.CreatedAt,
-		UpdatedAt:    domain.UpdatedAt,
+		Status:       1,
 	}
 }

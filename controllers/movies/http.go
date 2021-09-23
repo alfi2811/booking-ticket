@@ -33,3 +33,14 @@ func (movieController MovieController) AddMovie(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(movie))
 }
+
+func (movieController MovieController) ListMovie(c echo.Context) error {
+	ctx := c.Request().Context()
+	movies, error := movieController.MovieUsecase.ListMovie(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, movies)
+}

@@ -51,25 +51,12 @@ func (rep *MysqlUserRepository) Register(ctx context.Context, userRegister reque
 
 func (rep *MysqlUserRepository) GetUser(ctx context.Context) ([]users.Domain, error) {
 	var user []Users
-	var domainUser []users.Domain
+	// var domainUser []users.Domain
 	result := rep.Conn.Find(&user)
 
 	if result.Error != nil {
-		return domainUser, result.Error
-	}
-	for i := 0; i < len(user); i++ {
-		domainUser = append(domainUser, users.Domain{
-			ID:        user[i].ID,
-			Email:     user[i].Email,
-			Password:  user[i].Password,
-			Fullname:  user[i].Fullname,
-			Gender:    user[i].Gender,
-			Phone:     user[i].Phone,
-			Status:    user[i].Status,
-			CreatedAt: user[i].CreatedAt,
-			UpdatedAt: user[i].UpdatedAt,
-		})
+		return []users.Domain{}, result.Error
 	}
 
-	return domainUser, nil
+	return ToListDomain(user), nil
 }

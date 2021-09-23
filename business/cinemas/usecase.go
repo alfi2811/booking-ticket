@@ -32,3 +32,12 @@ func (uc *CinemaUsecase) AddCinema(ctx context.Context, domain Domain) (Domain, 
 	}
 	return user, nil
 }
+
+func (cc *CinemaUsecase) ListCinema(ctx context.Context) ([]Domain, error) {
+	movie, err := cc.Repo.ListCinema(ctx)
+
+	if err != nil {
+		return []Domain{}, err
+	}
+	return movie, nil
+}

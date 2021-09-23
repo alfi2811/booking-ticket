@@ -28,3 +28,14 @@ func (rep *MysqlCinemaRepository) AddCinema(ctx context.Context, domain cinemas.
 
 	return cinemaDB.ToDomain(), nil
 }
+
+func (rep *MysqlCinemaRepository) ListCinema(ctx context.Context) ([]cinemas.Domain, error) {
+	var listCinema []Cinemas
+	result := rep.Conn.Find(&listCinema)
+
+	if result.Error != nil {
+		return []cinemas.Domain{}, result.Error
+	}
+
+	return ToListDomain(listCinema), nil
+}

@@ -31,6 +31,14 @@ func (cinema *Cinemas) ToDomain() cinemas.Domain {
 	}
 }
 
+func ToListDomain(data []Cinemas) (result []cinemas.Domain) {
+	result = []cinemas.Domain{}
+	for _, cinema := range data {
+		result = append(result, cinema.ToDomain())
+	}
+	return
+}
+
 func FromDomain(domain cinemas.Domain) Cinemas {
 	return Cinemas{
 		ID:       domain.ID,

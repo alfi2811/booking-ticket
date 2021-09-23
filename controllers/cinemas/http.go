@@ -33,3 +33,14 @@ func (cinemaController CinemaController) AddMovie(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(cinema))
 }
+
+func (cinemaController CinemaController) ListMovie(c echo.Context) error {
+	ctx := c.Request().Context()
+	cinemas, error := cinemaController.CinemaUsecase.ListCinema(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, cinemas)
+}

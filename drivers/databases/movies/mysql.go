@@ -18,15 +18,7 @@ func NewMysqlMovieRepository(conn *gorm.DB) movies.Repository {
 }
 
 func (rep *MysqlMovieRepository) AddMovie(ctx context.Context, domain movies.Domain) (movies.Domain, error) {
-	var movieDB Movies
-
-	movieDB.Title = domain.Title
-	movieDB.Poster = domain.Poster
-	movieDB.ReleaseDate = domain.ReleaseDate
-	movieDB.Duration = domain.Duration
-	movieDB.MovieTrailer = domain.MovieTrailer
-	movieDB.Players = domain.Players
-	movieDB.Status = 1
+	movieDB := FromDomain(domain)
 
 	result := rep.Conn.Create(&movieDB)
 
@@ -35,4 +27,16 @@ func (rep *MysqlMovieRepository) AddMovie(ctx context.Context, domain movies.Dom
 	}
 
 	return movieDB.ToDomain(), nil
+}
+
+func (rep *MysqlMovieRepository) ListMovie(ctx context.Context) ([]movies.Domain, error) {
+	var listMovies []Movies
+	// var domainUser []users.Domain
+	result := rep.Conn.Find(&listMovies)
+
+	if result.Error != nil {
+		return []movies.Domain{}, result.Error
+	}
+
+	return ToListDomain(listMovies), nil
 }

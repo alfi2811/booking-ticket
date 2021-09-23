@@ -23,10 +23,12 @@ func (cl *ControllerList) RouteUsers(e *echo.Echo) {
 }
 
 func (cl *ControllerList) RouteMovies(e *echo.Echo) {
+	e.GET("movie", cl.MovieController.ListMovie)
 	e.POST("movie", cl.MovieController.AddMovie)
 }
 
 func (cl *ControllerList) RouteCinemas(e *echo.Echo) {
+	e.GET("cinema", cl.CinemaController.ListMovie)
 	e.POST("cinema", cl.CinemaController.AddMovie)
 }
 
