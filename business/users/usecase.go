@@ -1,6 +1,7 @@
 package users
 
 import (
+	"booking-ticket/app/middlewares"
 	"booking-ticket/controllers/users/requests"
 	"context"
 	"errors"
@@ -8,12 +9,14 @@ import (
 )
 
 type UserUsecase struct {
+	ConfigJWT      middlewares.ConfigJWT
 	Repo           Repository
 	contextTimeout time.Duration
 }
 
-func NewUserUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewUserUsecase(repo Repository, timeout time.Duration, configJWT middlewares.ConfigJWT) Usecase {
 	return &UserUsecase{
+		ConfigJWT:      configJWT,
 		Repo:           repo,
 		contextTimeout: timeout,
 	}
@@ -30,6 +33,10 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 
 	user, err := uc.Repo.Login(ctx, email, password)
 
+	if err != nil {
+		return Domain{}, err
+	}
+	user.Token, err = uc.ConfigJWT.GenerateToken(user.ID)
 	if err != nil {
 		return Domain{}, err
 	}

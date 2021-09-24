@@ -14,6 +14,7 @@ type Domain struct {
 	Gender    string
 	Phone     string
 	Status    int
+	Token     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

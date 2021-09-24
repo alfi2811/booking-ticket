@@ -45,6 +45,7 @@ func FromDomain(domain users.Domain) Users {
 		Fullname:  domain.Fullname,
 		Gender:    domain.Gender,
 		Phone:     domain.Phone,
+		Status:    1,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 	}

@@ -20,6 +20,8 @@ import (
 	_scheduleRepository "booking-ticket/drivers/databases/schedules"
 	_userRepository "booking-ticket/drivers/databases/users"
 
+	_middleware "booking-ticket/app/middlewares"
+
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -61,8 +63,13 @@ func main() {
 	e := echo.New()
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
+	configJWT := _middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+
 	userRepository := _userRepository.NewMysqlUserRepository(Conn)
-	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext)
+	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, configJWT)
 	userController := _userController.NewUserController(userUseCase)
 
 	movieRepository := _movieRepository.NewMysqlMovieRepository(Conn)
@@ -78,16 +85,18 @@ func main() {
 	scheduleController := _scheduleController.NewScheduleController(scheduleUseCase)
 
 	routesInit := routes.ControllerList{
+		JwtConfig:          configJWT.Init(),
 		UserController:     *userController,
 		MovieController:    *movieController,
 		CinemaController:   *cinemaController,
 		ScheduleController: *scheduleController,
 	}
 
-	routesInit.RouteUsers(e)
-	routesInit.RouteMovies(e)
-	routesInit.RouteCinemas(e)
-	routesInit.RouteSchedule(e)
+	apiV1 := e.Group("api/v1/")
+	routesInit.RouteUsers(apiV1)
+	routesInit.RouteMovies(apiV1)
+	routesInit.RouteCinemas(apiV1)
+	routesInit.RouteSchedule(apiV1)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 
 }

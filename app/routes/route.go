@@ -7,32 +7,34 @@ import (
 	"booking-ticket/controllers/users"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type ControllerList struct {
+	JwtConfig          middleware.JWTConfig
 	UserController     users.UserController
 	MovieController    movies.MovieController
 	CinemaController   cinemas.CinemaController
 	ScheduleController schedules.ScheduleController
 }
 
-func (cl *ControllerList) RouteUsers(e *echo.Echo) {
+func (cl *ControllerList) RouteUsers(e *echo.Group) {
 	e.POST("users/login", cl.UserController.Login)
 	e.POST("users/register", cl.UserController.Register)
-	e.GET("users", cl.UserController.GetUser)
+	e.GET("users", cl.UserController.GetUser, middleware.JWTWithConfig(cl.JwtConfig))
 }
 
-func (cl *ControllerList) RouteMovies(e *echo.Echo) {
+func (cl *ControllerList) RouteMovies(e *echo.Group) {
 	e.GET("movie", cl.MovieController.ListMovie)
 	e.POST("movie", cl.MovieController.AddMovie)
 }
 
-func (cl *ControllerList) RouteCinemas(e *echo.Echo) {
+func (cl *ControllerList) RouteCinemas(e *echo.Group) {
 	e.GET("cinema", cl.CinemaController.ListMovie)
 	e.POST("cinema", cl.CinemaController.AddMovie)
 }
 
-func (cl *ControllerList) RouteSchedule(e *echo.Echo) {
+func (cl *ControllerList) RouteSchedule(e *echo.Group) {
 	e.GET("schedule", cl.ScheduleController.ListSchedule)
 	e.POST("schedule", cl.ScheduleController.AddSchedule)
 }

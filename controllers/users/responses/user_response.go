@@ -13,6 +13,7 @@ type UserResponse struct {
 	Phone     string    `json:"phone"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
+	Token     string    `json:"token"`
 }
 
 func FromDomain(domain users.Domain) UserResponse {
@@ -22,6 +23,7 @@ func FromDomain(domain users.Domain) UserResponse {
 		Email:     domain.Email,
 		Gender:    domain.Gender,
 		Phone:     domain.Phone,
+		Token:     domain.Token,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 	}
