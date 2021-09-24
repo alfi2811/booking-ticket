@@ -33,5 +33,6 @@ func (cl *ControllerList) RouteCinemas(e *echo.Echo) {
 }
 
 func (cl *ControllerList) RouteSchedule(e *echo.Echo) {
+	e.GET("schedule", cl.ScheduleController.ListSchedule)
 	e.POST("schedule", cl.ScheduleController.AddSchedule)
 }

@@ -33,3 +33,14 @@ func (scheduleController ScheduleController) AddSchedule(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, responses.FromDomain(schedule))
 }
+
+func (scheduleController ScheduleController) ListSchedule(c echo.Context) error {
+	ctx := c.Request().Context()
+	schedules, error := scheduleController.ScheduleUsecase.ListSchedule(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, schedules)
+}

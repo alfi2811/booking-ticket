@@ -29,3 +29,12 @@ func (uc *ScheduleUsecase) AddSchedule(ctx context.Context, domain Domain) (Doma
 	}
 	return user, nil
 }
+
+func (sc *ScheduleUsecase) ListSchedule(ctx context.Context) ([]Domain, error) {
+	schedules, err := sc.Repo.ListSchedule(ctx)
+
+	if err != nil {
+		return []Domain{}, err
+	}
+	return schedules, nil
+}

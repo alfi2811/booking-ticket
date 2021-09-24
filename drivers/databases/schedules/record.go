@@ -29,6 +29,14 @@ func (schedule *Schedules) ToDomain() schedules.Domain {
 	}
 }
 
+func ToListDomain(data []Schedules) (result []schedules.Domain) {
+	result = []schedules.Domain{}
+	for _, schedule := range data {
+		result = append(result, schedule.ToDomain())
+	}
+	return
+}
+
 func FromDomain(domain schedules.Domain) Schedules {
 	return Schedules{
 		MovieId:  domain.MovieId,
