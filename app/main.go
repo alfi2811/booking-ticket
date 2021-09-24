@@ -2,19 +2,23 @@ package main
 
 import (
 	"booking-ticket/app/routes"
+	_adminUsecase "booking-ticket/business/admins"
 	_cinemaUsecase "booking-ticket/business/cinemas"
 	_movieUsecase "booking-ticket/business/movies"
 	_scheduleUsecase "booking-ticket/business/schedules"
 	_userUsecase "booking-ticket/business/users"
 
+	_adminController "booking-ticket/controllers/admins"
 	_cinemaController "booking-ticket/controllers/cinemas"
 	_movieController "booking-ticket/controllers/movies"
 	_scheduleController "booking-ticket/controllers/schedules"
 	_userController "booking-ticket/controllers/users"
 	_userdb "booking-ticket/drivers/databases/users"
+
 	_mysqlDriver "booking-ticket/drivers/mysql"
 	"time"
 
+	_adminRepository "booking-ticket/drivers/databases/admins"
 	_cinemaRepository "booking-ticket/drivers/databases/cinemas"
 	_movieRepository "booking-ticket/drivers/databases/movies"
 	_scheduleRepository "booking-ticket/drivers/databases/schedules"
@@ -68,6 +72,15 @@ func main() {
 		ExpiresDuration: viper.GetInt(`jwt.expired`),
 	}
 
+	configJWTAdmin := _middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwtAdmin.secret`),
+		ExpiresDuration: viper.GetInt(`jwtAdmin.expired`),
+	}
+
+	adminRepository := _adminRepository.NewMysqlAdminRepository(Conn)
+	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, configJWTAdmin)
+	adminController := _adminController.NewAdminController(adminUseCase)
+
 	userRepository := _userRepository.NewMysqlUserRepository(Conn)
 	userUseCase := _userUsecase.NewUserUsecase(userRepository, timeoutContext, configJWT)
 	userController := _userController.NewUserController(userUseCase)
@@ -86,7 +99,9 @@ func main() {
 
 	routesInit := routes.ControllerList{
 		JwtConfig:          configJWT.Init(),
+		JwtConfigAdmin:     configJWTAdmin.Init(),
 		UserController:     *userController,
+		AdminController:    *adminController,
 		MovieController:    *movieController,
 		CinemaController:   *cinemaController,
 		ScheduleController: *scheduleController,
@@ -94,6 +109,7 @@ func main() {
 
 	apiV1 := e.Group("api/v1/")
 	routesInit.RouteUsers(apiV1)
+	routesInit.RouteAdmins(apiV1)
 	routesInit.RouteMovies(apiV1)
 	routesInit.RouteCinemas(apiV1)
 	routesInit.RouteSchedule(apiV1)

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"booking-ticket/controllers/admins"
 	"booking-ticket/controllers/cinemas"
 	"booking-ticket/controllers/movies"
 	"booking-ticket/controllers/schedules"
@@ -12,7 +13,9 @@ import (
 
 type ControllerList struct {
 	JwtConfig          middleware.JWTConfig
+	JwtConfigAdmin     middleware.JWTConfig
 	UserController     users.UserController
+	AdminController    admins.AdminController
 	MovieController    movies.MovieController
 	CinemaController   cinemas.CinemaController
 	ScheduleController schedules.ScheduleController
@@ -22,6 +25,12 @@ func (cl *ControllerList) RouteUsers(e *echo.Group) {
 	e.POST("users/login", cl.UserController.Login)
 	e.POST("users/register", cl.UserController.Register)
 	e.GET("users", cl.UserController.GetUser, middleware.JWTWithConfig(cl.JwtConfig))
+}
+
+func (cl *ControllerList) RouteAdmins(e *echo.Group) {
+	e.POST("admins/login", cl.AdminController.Login)
+	e.POST("admins/register", cl.AdminController.Register)
+	e.GET("admins", cl.AdminController.GetAdmin, middleware.JWTWithConfig(cl.JwtConfigAdmin))
 }
 
 func (cl *ControllerList) RouteMovies(e *echo.Group) {

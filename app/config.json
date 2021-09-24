@@ -16,5 +16,9 @@
   "jwt" : {
     "secret" : "kampusmerdeka#212",
     "expired" : 72
+  },
+  "jwtAdmin" : {
+    "secret" : "adminBookingTicket#2811",
+    "expired" : 72
   }
 }
