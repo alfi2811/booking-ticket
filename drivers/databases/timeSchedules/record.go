@@ -2,6 +2,7 @@ package timeSchedules
 
 import (
 	"booking-ticket/business/timeSchedules"
+	"booking-ticket/drivers/databases/bookings"
 	"time"
 )
 
@@ -11,6 +12,7 @@ type TimeSchedules struct {
 	TimeMovie  time.Time
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+	Booking    []bookings.Bookings `gorm:"foreignKey:TimeScheduleId;references:ID"`
 }
 
 func (schedule *TimeSchedules) ToDomain() timeSchedules.Domain {

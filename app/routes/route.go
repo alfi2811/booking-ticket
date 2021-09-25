@@ -2,6 +2,7 @@ package routes
 
 import (
 	"booking-ticket/controllers/admins"
+	"booking-ticket/controllers/bookings"
 	"booking-ticket/controllers/cinemas"
 	"booking-ticket/controllers/movies"
 	"booking-ticket/controllers/schedules"
@@ -21,6 +22,7 @@ type ControllerList struct {
 	CinemaController       cinemas.CinemaController
 	ScheduleController     schedules.ScheduleController
 	TimeScheduleController timeSchedules.TimeScheduleController
+	BookingController      bookings.BookingController
 }
 
 func (cl *ControllerList) RouteUsers(e *echo.Group) {
@@ -54,4 +56,8 @@ func (cl *ControllerList) RouteSchedule(e *echo.Group) {
 
 func (cl *ControllerList) RouteTimeSchedule(e *echo.Group) {
 	e.POST("schedule/time", cl.TimeScheduleController.AddScheduleTime)
+}
+
+func (cl *ControllerList) RouteBooking(e *echo.Group) {
+	e.POST("booking", cl.BookingController.AddBooking)
 }
