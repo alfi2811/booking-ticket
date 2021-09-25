@@ -1,7 +1,6 @@
 package users
 
 import (
-	"booking-ticket/controllers/users/requests"
 	"context"
 	"time"
 )
@@ -21,12 +20,12 @@ type Domain struct {
 
 type Usecase interface {
 	Login(ctx context.Context, email string, password string) (Domain, error)
-	Register(ctx context.Context, userRegister requests.UserRegister) (Domain, error)
+	Register(ctx context.Context, domain Domain) (Domain, error)
 	GetUser(ctx context.Context) ([]Domain, error)
 }
 
 type Repository interface {
 	Login(ctx context.Context, email string, password string) (Domain, error)
-	Register(ctx context.Context, userRegister requests.UserRegister) (Domain, error)
+	Register(ctx context.Context, domain Domain) (Domain, error)
 	GetUser(ctx context.Context) ([]Domain, error)
 }

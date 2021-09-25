@@ -42,7 +42,7 @@ func (userController UserController) Register(c echo.Context) error {
 	c.Bind(&userRegister)
 
 	ctx := c.Request().Context()
-	user, error := userController.UserUseCase.Register(ctx, userRegister)
+	user, error := userController.UserUseCase.Register(ctx, userRegister.ToDomain())
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)

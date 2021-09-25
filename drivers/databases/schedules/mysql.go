@@ -32,8 +32,8 @@ func (rep *MysqlSchedulesRepository) AddSchedule(ctx context.Context, domain sch
 
 func (rep *MysqlSchedulesRepository) ListSchedule(ctx context.Context) ([]schedules.Domain, error) {
 	var ListSchedule []Schedules
-	// result := rep.Conn.Find(&ListSchedule)
-	result := rep.Conn.Model(&ListSchedule).Select("movies.title ,schedules.date, schedules.price").Joins("left join movies on schedules.movie_id = movies.id")
+	var schedulesData []schedules.Domain
+	result := rep.Conn.Model(&ListSchedule).Select("movies.title ,schedules.date, schedules.price").Joins("left join movies on schedules.movie_id = movies.id").Scan(&schedulesData)
 
 	fmt.Println(result)
 
@@ -41,5 +41,5 @@ func (rep *MysqlSchedulesRepository) ListSchedule(ctx context.Context) ([]schedu
 		return []schedules.Domain{}, result.Error
 	}
 
-	return ToListDomain(ListSchedule), nil
+	return schedulesData, nil
 }

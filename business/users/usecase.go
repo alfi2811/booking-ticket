@@ -2,7 +2,6 @@ package users
 
 import (
 	"booking-ticket/app/middlewares"
-	"booking-ticket/controllers/users/requests"
 	"context"
 	"errors"
 	"time"
@@ -43,14 +42,14 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	return user, nil
 }
 
-func (uc *UserUsecase) Register(ctx context.Context, userRegister requests.UserRegister) (Domain, error) {
-	if userRegister.Email == "" {
+func (uc *UserUsecase) Register(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.Email == "" {
 		return Domain{}, errors.New("email empty")
 	}
-	if userRegister.Password == "" {
+	if domain.Password == "" {
 		return Domain{}, errors.New("password empty")
 	}
-	user, err := uc.Repo.Register(ctx, userRegister)
+	user, err := uc.Repo.Register(ctx, domain)
 
 	if err != nil {
 		return Domain{}, err

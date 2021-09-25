@@ -2,7 +2,6 @@ package users
 
 import (
 	"booking-ticket/business/users"
-	"booking-ticket/controllers/users/requests"
 	"context"
 
 	"gorm.io/gorm"
@@ -30,15 +29,8 @@ func (rep *MysqlUserRepository) Login(ctx context.Context, email string, passwor
 	return user.ToDomain(), nil
 }
 
-func (rep *MysqlUserRepository) Register(ctx context.Context, userRegister requests.UserRegister) (users.Domain, error) {
-	var user Users
-
-	user.Email = userRegister.Email
-	user.Password = userRegister.Password
-	user.Fullname = userRegister.Fullname
-	user.Gender = userRegister.Gender
-	user.Phone = userRegister.Phone
-	user.Status = 1
+func (rep *MysqlUserRepository) Register(ctx context.Context, domain users.Domain) (users.Domain, error) {
+	user := FromDomain(domain)
 
 	result := rep.Conn.Create(&user)
 
