@@ -5,6 +5,7 @@ import (
 	"booking-ticket/controllers/cinemas"
 	"booking-ticket/controllers/movies"
 	"booking-ticket/controllers/schedules"
+	"booking-ticket/controllers/timeSchedules"
 	"booking-ticket/controllers/users"
 
 	"github.com/labstack/echo/v4"
@@ -12,13 +13,14 @@ import (
 )
 
 type ControllerList struct {
-	JwtConfig          middleware.JWTConfig
-	JwtConfigAdmin     middleware.JWTConfig
-	UserController     users.UserController
-	AdminController    admins.AdminController
-	MovieController    movies.MovieController
-	CinemaController   cinemas.CinemaController
-	ScheduleController schedules.ScheduleController
+	JwtConfig              middleware.JWTConfig
+	JwtConfigAdmin         middleware.JWTConfig
+	UserController         users.UserController
+	AdminController        admins.AdminController
+	MovieController        movies.MovieController
+	CinemaController       cinemas.CinemaController
+	ScheduleController     schedules.ScheduleController
+	TimeScheduleController timeSchedules.TimeScheduleController
 }
 
 func (cl *ControllerList) RouteUsers(e *echo.Group) {
@@ -39,11 +41,17 @@ func (cl *ControllerList) RouteMovies(e *echo.Group) {
 }
 
 func (cl *ControllerList) RouteCinemas(e *echo.Group) {
-	e.GET("cinema", cl.CinemaController.ListMovie)
-	e.POST("cinema", cl.CinemaController.AddMovie)
+	e.GET("cinema", cl.CinemaController.ListCinema)
+	e.GET("cinema/detail", cl.CinemaController.CinemaDetail)
+	e.POST("cinema", cl.CinemaController.AddCinema)
 }
 
 func (cl *ControllerList) RouteSchedule(e *echo.Group) {
 	e.GET("schedule", cl.ScheduleController.ListSchedule)
+	e.GET("schedule/:id", cl.ScheduleController.DetailTimeSchedule)
 	e.POST("schedule", cl.ScheduleController.AddSchedule)
+}
+
+func (cl *ControllerList) RouteTimeSchedule(e *echo.Group) {
+	e.POST("schedule/time", cl.TimeScheduleController.AddScheduleTime)
 }

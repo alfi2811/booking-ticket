@@ -38,3 +38,12 @@ func (sc *ScheduleUsecase) ListSchedule(ctx context.Context) ([]Domain, error) {
 	}
 	return schedules, nil
 }
+
+func (sc *ScheduleUsecase) DetailTimeSchedule(ctx context.Context, idSchedule int) (Domain, error) {
+	schedule, err := sc.Repo.DetailTimeSchedule(ctx, idSchedule)
+
+	if err != nil {
+		return Domain{}, err
+	}
+	return schedule, nil
+}

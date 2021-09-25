@@ -20,7 +20,7 @@ func NewCinemaController(cinemaUseCase cinemas.Usecase) *CinemaController {
 	}
 }
 
-func (cinemaController CinemaController) AddMovie(c echo.Context) error {
+func (cinemaController CinemaController) AddCinema(c echo.Context) error {
 	cinemaAdd := requests.CinemaAdd{}
 	c.Bind(&cinemaAdd)
 
@@ -34,7 +34,7 @@ func (cinemaController CinemaController) AddMovie(c echo.Context) error {
 	return controllers.NewSuccesResponse(c, responses.FromDomain(cinema))
 }
 
-func (cinemaController CinemaController) ListMovie(c echo.Context) error {
+func (cinemaController CinemaController) ListCinema(c echo.Context) error {
 	ctx := c.Request().Context()
 	cinemas, error := cinemaController.CinemaUsecase.ListCinema(ctx)
 
@@ -43,4 +43,15 @@ func (cinemaController CinemaController) ListMovie(c echo.Context) error {
 	}
 
 	return controllers.NewSuccesResponse(c, cinemas)
+}
+
+func (cinemaController CinemaController) CinemaDetail(c echo.Context) error {
+	ctx := c.Request().Context()
+	cinema, error := cinemaController.CinemaUsecase.CinemaDetail(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomain(cinema))
 }
