@@ -2,6 +2,7 @@ package users
 
 import (
 	"booking-ticket/business/users"
+	"booking-ticket/drivers/databases/bookings"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type Users struct {
 	Status    int
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Booking   []bookings.Bookings `gorm:"foreignKey:UserId;references:ID"`
 }
 
 func (user *Users) ToDomain() users.Domain {

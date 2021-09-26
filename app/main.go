@@ -26,6 +26,10 @@ import (
 	_timeScheduleController "booking-ticket/controllers/timeSchedules"
 	_timeScheduleRepository "booking-ticket/drivers/databases/timeSchedules"
 
+	_bookingUsecase "booking-ticket/business/bookings"
+	_bookingController "booking-ticket/controllers/bookings"
+	_bookingRepository "booking-ticket/drivers/databases/bookings"
+
 	_middleware "booking-ticket/app/middlewares"
 	_userdb "booking-ticket/drivers/databases/users"
 	_mysqlDriver "booking-ticket/drivers/mysql"
@@ -55,6 +59,7 @@ func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_cinemaRepository.Cinemas{})
 	db.AutoMigrate(&_scheduleRepository.Schedules{})
 	db.AutoMigrate(&_timeScheduleRepository.TimeSchedules{})
+	db.AutoMigrate(&_bookingRepository.Bookings{})
 }
 
 func main() {
@@ -107,6 +112,10 @@ func main() {
 	timeScheduleUseCase := _timeScheduleUsecase.NewTimeScheduleUsecase(timeScheduleRepository, timeoutContext)
 	timeScheduleController := _timeScheduleController.NewTimeScheduleController(timeScheduleUseCase)
 
+	bookingRepository := _bookingRepository.NewMysqlBookingsRepository(Conn)
+	bookingUseCase := _bookingUsecase.NewBookingUsecase(bookingRepository, timeoutContext)
+	bookingController := _bookingController.NewBookingController(bookingUseCase)
+
 	routesInit := routes.ControllerList{
 		JwtConfig:              configJWT.Init(),
 		JwtConfigAdmin:         configJWTAdmin.Init(),
@@ -116,6 +125,7 @@ func main() {
 		CinemaController:       *cinemaController,
 		ScheduleController:     *scheduleController,
 		TimeScheduleController: *timeScheduleController,
+		BookingController:      *bookingController,
 	}
 
 	apiV1 := e.Group("api/v1/")
@@ -125,6 +135,7 @@ func main() {
 	routesInit.RouteCinemas(apiV1)
 	routesInit.RouteSchedule(apiV1)
 	routesInit.RouteTimeSchedule(apiV1)
+	routesInit.RouteBooking(apiV1)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 
 }
