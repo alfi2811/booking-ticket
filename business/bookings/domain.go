@@ -20,8 +20,10 @@ type Domain struct {
 
 type Usecase interface {
 	AddBooking(ctx context.Context, domain Domain) (Domain, error)
+	ListBooking(ctx context.Context) ([]Domain, error)
 }
 
 type Repository interface {
 	AddBooking(ctx context.Context, domain Domain) (Domain, error)
+	ListBooking(ctx context.Context) ([]Domain, error)
 }

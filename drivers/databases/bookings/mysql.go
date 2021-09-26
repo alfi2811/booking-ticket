@@ -28,3 +28,14 @@ func (rep *MysqlBookingRepository) AddBooking(ctx context.Context, domain bookin
 
 	return bookingDB.ToDomain(), nil
 }
+
+func (rep *MysqlBookingRepository) ListBooking(ctx context.Context) ([]bookings.Domain, error) {
+	var listBooking []Bookings
+	result := rep.Conn.Find(&listBooking)
+
+	if result.Error != nil {
+		return []bookings.Domain{}, result.Error
+	}
+
+	return ToListDomain(listBooking), nil
+}

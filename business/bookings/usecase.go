@@ -31,3 +31,11 @@ func (uc *BookingUsecase) AddBooking(ctx context.Context, domain Domain) (Domain
 	}
 	return user, nil
 }
+func (bc *BookingUsecase) ListBooking(ctx context.Context) ([]Domain, error) {
+	movie, err := bc.Repo.ListBooking(ctx)
+
+	if err != nil {
+		return []Domain{}, err
+	}
+	return movie, nil
+}
