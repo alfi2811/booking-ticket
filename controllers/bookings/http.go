@@ -31,5 +31,16 @@ func (bookingController BookingController) AddBooking(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(booking))
+	return controllers.NewSuccesResponse(c, responses.FromAddDomain(booking))
+}
+
+func (bookingController BookingController) ListBooking(c echo.Context) error {
+	ctx := c.Request().Context()
+	bookings, error := bookingController.BookingUsecase.ListBooking(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(bookings))
 }

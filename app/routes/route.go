@@ -60,5 +60,6 @@ func (cl *ControllerList) RouteTimeSchedule(e *echo.Group) {
 }
 
 func (cl *ControllerList) RouteBooking(e *echo.Group) {
+	e.GET("booking", cl.BookingController.ListBooking)
 	e.POST("booking", cl.BookingController.AddBooking)
 }
