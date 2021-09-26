@@ -12,6 +12,7 @@ type Domain struct {
 	NumberSeat     string
 	Quantity       int
 	TotalPrice     int
+	QrCode         string
 	Status         int
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

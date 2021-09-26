@@ -12,6 +12,7 @@ type Bookings struct {
 	NumberSeat     string
 	Quantity       int
 	TotalPrice     int
+	QrCode         string
 	Status         int
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
@@ -25,6 +26,7 @@ func (booking *Bookings) ToDomain() bookings.Domain {
 		NumberSeat:     booking.NumberSeat,
 		Quantity:       booking.Quantity,
 		TotalPrice:     booking.TotalPrice,
+		QrCode:         booking.QrCode,
 		Status:         booking.Status,
 		CreatedAt:      booking.CreatedAt,
 		UpdatedAt:      booking.UpdatedAt,
@@ -46,6 +48,7 @@ func FromDomain(domain bookings.Domain) Bookings {
 		NumberSeat:     domain.NumberSeat,
 		Quantity:       domain.Quantity,
 		TotalPrice:     domain.TotalPrice,
+		QrCode:         domain.QrCode,
 		Status:         1,
 		CreatedAt:      domain.CreatedAt,
 		UpdatedAt:      domain.UpdatedAt,

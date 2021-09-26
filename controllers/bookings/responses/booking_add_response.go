@@ -12,6 +12,7 @@ type BookingAddResponse struct {
 	NumberSeat     string    `json:"numberSeat"`
 	Quantity       int       `json:"quantity"`
 	TotalPrice     int       `json:"totalPrice"`
+	QrCode         string    `json:"qrcode"`
 	CreatedAt      time.Time `json:"createdAt"`
 	UpdatedAt      time.Time `json:"updatedAt"`
 }
@@ -24,6 +25,7 @@ func FromDomain(domain bookings.Domain) BookingAddResponse {
 		NumberSeat:     domain.NumberSeat,
 		Quantity:       domain.Quantity,
 		TotalPrice:     domain.TotalPrice,
+		QrCode:         domain.QrCode,
 		CreatedAt:      domain.CreatedAt,
 		UpdatedAt:      domain.UpdatedAt,
 	}
