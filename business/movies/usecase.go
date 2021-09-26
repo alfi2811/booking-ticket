@@ -41,3 +41,12 @@ func (mc *MovieUsecase) ListMovie(ctx context.Context) ([]Domain, error) {
 	}
 	return movie, nil
 }
+
+func (mc *MovieUsecase) DetailMovie(ctx context.Context, idMovie int) (Domain, error) {
+	movie, err := mc.Repo.DetailMovie(ctx, idMovie)
+
+	if err != nil {
+		return Domain{}, err
+	}
+	return movie, nil
+}

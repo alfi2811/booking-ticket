@@ -40,3 +40,14 @@ func (rep *MysqlMovieRepository) ListMovie(ctx context.Context) ([]movies.Domain
 
 	return ToListDomain(listMovies), nil
 }
+
+func (rep *MysqlMovieRepository) DetailMovie(ctx context.Context, idMovie int) (movies.Domain, error) {
+	var movie Movies
+
+	result := rep.Conn.Where("id = ?", idMovie).First(&movie)
+	if result.Error != nil {
+		return movies.Domain{}, result.Error
+	}
+
+	return movie.ToDomain(), nil
+}

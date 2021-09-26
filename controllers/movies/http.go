@@ -6,6 +6,7 @@ import (
 	"booking-ticket/controllers/movies/requests"
 	"booking-ticket/controllers/movies/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -42,5 +43,17 @@ func (movieController MovieController) ListMovie(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, movies)
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(movies))
+}
+
+func (movieController MovieController) DetailMovie(c echo.Context) error {
+	ctx := c.Request().Context()
+	id, _ := strconv.Atoi(c.Param("id"))
+	movie, error := movieController.MovieUsecase.DetailMovie(ctx, id)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomainDetail(movie))
 }

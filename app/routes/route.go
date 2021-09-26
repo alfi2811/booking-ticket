@@ -39,6 +39,7 @@ func (cl *ControllerList) RouteAdmins(e *echo.Group) {
 
 func (cl *ControllerList) RouteMovies(e *echo.Group) {
 	e.GET("movie", cl.MovieController.ListMovie)
+	e.GET("movie/:id", cl.MovieController.DetailMovie)
 	e.POST("movie", cl.MovieController.AddMovie)
 }
 

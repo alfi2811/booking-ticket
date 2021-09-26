@@ -22,3 +22,11 @@ func FromDomain(domain movies.Domain) MovieResponse {
 		Status:      domain.Status,
 	}
 }
+
+func FromListDomain(data []movies.Domain) (result []MovieResponse) {
+	result = []MovieResponse{}
+	for _, movie := range data {
+		result = append(result, FromDomain(movie))
+	}
+	return
+}
