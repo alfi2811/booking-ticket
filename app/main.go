@@ -3,28 +3,37 @@ package main
 import (
 	"booking-ticket/app/routes"
 	_adminUsecase "booking-ticket/business/admins"
-	_cinemaUsecase "booking-ticket/business/cinemas"
-	_movieUsecase "booking-ticket/business/movies"
-	_scheduleUsecase "booking-ticket/business/schedules"
-	_userUsecase "booking-ticket/business/users"
-
 	_adminController "booking-ticket/controllers/admins"
-	_cinemaController "booking-ticket/controllers/cinemas"
-	_movieController "booking-ticket/controllers/movies"
-	_scheduleController "booking-ticket/controllers/schedules"
-	_userController "booking-ticket/controllers/users"
-	_userdb "booking-ticket/drivers/databases/users"
-
-	_mysqlDriver "booking-ticket/drivers/mysql"
-	"time"
-
 	_adminRepository "booking-ticket/drivers/databases/admins"
-	_cinemaRepository "booking-ticket/drivers/databases/cinemas"
-	_movieRepository "booking-ticket/drivers/databases/movies"
-	_scheduleRepository "booking-ticket/drivers/databases/schedules"
+
+	_userUsecase "booking-ticket/business/users"
+	_userController "booking-ticket/controllers/users"
 	_userRepository "booking-ticket/drivers/databases/users"
 
+	_cinemaUsecase "booking-ticket/business/cinemas"
+	_cinemaController "booking-ticket/controllers/cinemas"
+	_cinemaRepository "booking-ticket/drivers/databases/cinemas"
+
+	_movieUsecase "booking-ticket/business/movies"
+	_movieController "booking-ticket/controllers/movies"
+	_movieRepository "booking-ticket/drivers/databases/movies"
+
+	_scheduleUsecase "booking-ticket/business/schedules"
+	_scheduleController "booking-ticket/controllers/schedules"
+	_scheduleRepository "booking-ticket/drivers/databases/schedules"
+
+	_timeScheduleUsecase "booking-ticket/business/timeSchedules"
+	_timeScheduleController "booking-ticket/controllers/timeSchedules"
+	_timeScheduleRepository "booking-ticket/drivers/databases/timeSchedules"
+
+	_bookingUsecase "booking-ticket/business/bookings"
+	_bookingController "booking-ticket/controllers/bookings"
+	_bookingRepository "booking-ticket/drivers/databases/bookings"
+
 	_middleware "booking-ticket/app/middlewares"
+	_userdb "booking-ticket/drivers/databases/users"
+	_mysqlDriver "booking-ticket/drivers/mysql"
+	"time"
 
 	"log"
 
@@ -49,6 +58,8 @@ func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_movieRepository.Movies{})
 	db.AutoMigrate(&_cinemaRepository.Cinemas{})
 	db.AutoMigrate(&_scheduleRepository.Schedules{})
+	db.AutoMigrate(&_timeScheduleRepository.TimeSchedules{})
+	db.AutoMigrate(&_bookingRepository.Bookings{})
 }
 
 func main() {
@@ -97,14 +108,24 @@ func main() {
 	scheduleUseCase := _scheduleUsecase.NewScheduleUsecase(scheduleRepository, timeoutContext)
 	scheduleController := _scheduleController.NewScheduleController(scheduleUseCase)
 
+	timeScheduleRepository := _timeScheduleRepository.NewMysqlTimeScheduleRepository(Conn)
+	timeScheduleUseCase := _timeScheduleUsecase.NewTimeScheduleUsecase(timeScheduleRepository, timeoutContext)
+	timeScheduleController := _timeScheduleController.NewTimeScheduleController(timeScheduleUseCase)
+
+	bookingRepository := _bookingRepository.NewMysqlBookingsRepository(Conn)
+	bookingUseCase := _bookingUsecase.NewBookingUsecase(bookingRepository, timeoutContext)
+	bookingController := _bookingController.NewBookingController(bookingUseCase)
+
 	routesInit := routes.ControllerList{
-		JwtConfig:          configJWT.Init(),
-		JwtConfigAdmin:     configJWTAdmin.Init(),
-		UserController:     *userController,
-		AdminController:    *adminController,
-		MovieController:    *movieController,
-		CinemaController:   *cinemaController,
-		ScheduleController: *scheduleController,
+		JwtConfig:              configJWT.Init(),
+		JwtConfigAdmin:         configJWTAdmin.Init(),
+		UserController:         *userController,
+		AdminController:        *adminController,
+		MovieController:        *movieController,
+		CinemaController:       *cinemaController,
+		ScheduleController:     *scheduleController,
+		TimeScheduleController: *timeScheduleController,
+		BookingController:      *bookingController,
 	}
 
 	apiV1 := e.Group("api/v1/")
@@ -113,6 +134,8 @@ func main() {
 	routesInit.RouteMovies(apiV1)
 	routesInit.RouteCinemas(apiV1)
 	routesInit.RouteSchedule(apiV1)
+	routesInit.RouteTimeSchedule(apiV1)
+	routesInit.RouteBooking(apiV1)
 	log.Fatal(e.Start(viper.GetString("server.address")))
 
 }
