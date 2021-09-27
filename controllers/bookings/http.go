@@ -6,6 +6,7 @@ import (
 	"booking-ticket/controllers/bookings/requests"
 	"booking-ticket/controllers/bookings/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -43,4 +44,16 @@ func (bookingController BookingController) ListBooking(c echo.Context) error {
 	}
 
 	return controllers.NewSuccesResponse(c, responses.FromListDomain(bookings))
+}
+
+func (bookingController BookingController) ListBookingUser(c echo.Context) error {
+	ctx := c.Request().Context()
+	id, _ := strconv.Atoi(c.Param("id"))
+	bookings, error := bookingController.BookingUsecase.ListBookingUser(ctx, id)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromListDomainBookingUser(bookings))
 }
