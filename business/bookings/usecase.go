@@ -39,3 +39,12 @@ func (bc *BookingUsecase) ListBooking(ctx context.Context) ([]Domain, error) {
 	}
 	return movie, nil
 }
+
+func (bc *BookingUsecase) ListBookingUser(ctx context.Context, userId int) ([]DomainJoin, error) {
+	movie, err := bc.Repo.ListBookingUser(ctx, userId)
+
+	if err != nil {
+		return []DomainJoin{}, err
+	}
+	return movie, nil
+}
