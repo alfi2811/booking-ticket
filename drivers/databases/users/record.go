@@ -27,6 +27,8 @@ func (user *Users) ToDomain() users.Domain {
 		Fullname:  user.Fullname,
 		Gender:    user.Gender,
 		Phone:     user.Phone,
+		Booking:   user.Booking,
+		Status:    user.Status,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 	}
