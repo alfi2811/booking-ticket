@@ -48,3 +48,12 @@ func (bc *BookingUsecase) ListBookingUser(ctx context.Context, userId int) ([]Do
 	}
 	return movie, nil
 }
+
+func (bc *BookingUsecase) DetailBooking(ctx context.Context, bookingId int) (Domain, error) {
+	movie, err := bc.Repo.DetailBooking(ctx, bookingId)
+
+	if err != nil {
+		return Domain{}, err
+	}
+	return movie, nil
+}
