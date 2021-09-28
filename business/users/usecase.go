@@ -35,7 +35,7 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	if err != nil {
 		return Domain{}, err
 	}
-	user.Token, err = uc.ConfigJWT.GenerateToken(user.ID)
+	user.Token, err = uc.ConfigJWT.GenerateToken(user.ID, "user")
 	if err != nil {
 		return Domain{}, err
 	}
