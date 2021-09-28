@@ -89,7 +89,7 @@ func main() {
 	}
 
 	adminRepository := _adminRepository.NewMysqlAdminRepository(Conn)
-	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, configJWTAdmin)
+	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, configJWT)
 	adminController := _adminController.NewAdminController(adminUseCase)
 
 	userRepository := _userRepository.NewMysqlUserRepository(Conn)

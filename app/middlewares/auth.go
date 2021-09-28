@@ -10,6 +10,7 @@ import (
 
 type JwtMyClaims struct {
 	UserId int
+	Role   string
 	jwt.StandardClaims
 }
 
@@ -25,9 +26,10 @@ func (jwtConf *ConfigJWT) Init() middleware.JWTConfig {
 	}
 }
 
-func (jwtConf *ConfigJWT) GenerateToken(UserId int) (string, error) {
+func (jwtConf *ConfigJWT) GenerateToken(UserId int, Role string) (string, error) {
 	claims := JwtMyClaims{
 		UserId,
+		Role,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(int64(jwtConf.ExpiresDuration))).Unix(),
 		},
@@ -41,7 +43,12 @@ func (jwtConf *ConfigJWT) GenerateToken(UserId int) (string, error) {
 }
 
 func GetUser(c echo.Context) *JwtMyClaims {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(*JwtMyClaims)
-	return claims
+	tmp := c.Get("user")
+	if tmp != nil {
+		user := tmp.(*jwt.Token)
+		claims := user.Claims.(*JwtMyClaims)
+		return claims
+	} else {
+		return &JwtMyClaims{}
+	}
 }
