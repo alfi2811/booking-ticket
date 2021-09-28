@@ -1,6 +1,8 @@
 package routes
 
 import (
+	middlewareApp "booking-ticket/app/middlewares"
+	controller "booking-ticket/controllers"
 	"booking-ticket/controllers/admins"
 	"booking-ticket/controllers/bookings"
 	"booking-ticket/controllers/cinemas"
@@ -8,6 +10,8 @@ import (
 	"booking-ticket/controllers/schedules"
 	"booking-ticket/controllers/timeSchedules"
 	"booking-ticket/controllers/users"
+	"errors"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -63,4 +67,20 @@ func (cl *ControllerList) RouteBooking(e *echo.Group) {
 	e.GET("booking", cl.BookingController.ListBooking)
 	e.GET("booking/user/:id", cl.BookingController.ListBookingUser)
 	e.POST("booking", cl.BookingController.AddBooking)
+}
+
+func RoleValidation(role int, userControler users.UserController) echo.MiddlewareFunc {
+	return func(hf echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			claims := middlewareApp.GetUser(c)
+
+			userRole := claims.UserId
+
+			if userRole == role {
+				return hf(c)
+			} else {
+				return controller.NewErrorResponse(c, http.StatusForbidden, errors.New("forbidden roles"))
+			}
+		}
+	}
 }
