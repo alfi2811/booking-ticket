@@ -3,6 +3,7 @@ package users
 import (
 	"booking-ticket/business/users"
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -44,8 +45,20 @@ func (rep *MysqlUserRepository) Register(ctx context.Context, domain users.Domai
 func (rep *MysqlUserRepository) GetUser(ctx context.Context) ([]users.Domain, error) {
 	var user []Users
 	// var domainUser []users.Domain
-	result := rep.Conn.Find(&user)
+	result := rep.Conn.Debug().Find(&user)
 
+	if result.Error != nil {
+		return []users.Domain{}, result.Error
+	}
+
+	return ToListDomain(user), nil
+}
+
+func (rep *MysqlUserRepository) ListUserBooking(ctx context.Context) ([]users.Domain, error) {
+	var user []Users
+	// var domainUser []users.Domain
+	result := rep.Conn.Debug().Preload("Booking").Find(&user)
+	fmt.Println(user)
 	if result.Error != nil {
 		return []users.Domain{}, result.Error
 	}

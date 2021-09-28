@@ -61,3 +61,14 @@ func (userController UserController) GetUser(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, user)
 }
+
+func (userController UserController) ListUserBooking(c echo.Context) error {
+	ctx := c.Request().Context()
+	user, error := userController.UserUseCase.ListUserBooking(ctx)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, user)
+}

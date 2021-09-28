@@ -33,6 +33,7 @@ func (cl *ControllerList) RouteUsers(e *echo.Group) {
 	e.POST("users/login", cl.UserController.Login)
 	e.POST("users/register", cl.UserController.Register)
 	e.GET("users", cl.UserController.GetUser, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("users/booking", cl.UserController.ListUserBooking)
 }
 
 func (cl *ControllerList) RouteAdmins(e *echo.Group) {

@@ -65,3 +65,12 @@ func (uc *UserUsecase) GetUser(ctx context.Context) ([]Domain, error) {
 	}
 	return user, nil
 }
+
+func (uc *UserUsecase) ListUserBooking(ctx context.Context) ([]Domain, error) {
+	user, err := uc.Repo.ListUserBooking(ctx)
+
+	if err != nil {
+		return []Domain{}, err
+	}
+	return user, nil
+}
