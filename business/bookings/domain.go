@@ -25,6 +25,7 @@ type Domain struct {
 	TitleMovie     string
 	PosterMovie    string
 	NameCinema     string
+	Detail         DomainJoin
 	Time           time.Time
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
@@ -34,10 +35,12 @@ type Usecase interface {
 	AddBooking(ctx context.Context, domain Domain) (Domain, error)
 	ListBooking(ctx context.Context) ([]Domain, error)
 	ListBookingUser(ctx context.Context, userId int) ([]DomainJoin, error)
+	DetailBooking(ctx context.Context, bookingId int) (Domain, error)
 }
 
 type Repository interface {
 	AddBooking(ctx context.Context, domain Domain) (Domain, error)
 	ListBooking(ctx context.Context) ([]Domain, error)
 	ListBookingUser(ctx context.Context, userId int) ([]DomainJoin, error)
+	DetailBooking(ctx context.Context, bookingId int) (Domain, error)
 }

@@ -57,3 +57,15 @@ func (bookingController BookingController) ListBookingUser(c echo.Context) error
 
 	return controllers.NewSuccesResponse(c, responses.FromListDomainBookingUser(bookings))
 }
+
+func (bookingController BookingController) DetailBooking(c echo.Context) error {
+	ctx := c.Request().Context()
+	id, _ := strconv.Atoi(c.Param("id"))
+	bookings, error := bookingController.BookingUsecase.DetailBooking(ctx, id)
+
+	if error != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
+	return controllers.NewSuccesResponse(c, responses.FromDomainDetail(bookings))
+}

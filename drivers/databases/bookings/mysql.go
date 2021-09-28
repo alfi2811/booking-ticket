@@ -52,3 +52,16 @@ func (rep *MysqlBookingRepository) ListBookingUser(ctx context.Context, userId i
 
 	return listBookingUser, nil
 }
+
+func (rep *MysqlBookingRepository) DetailBooking(ctx context.Context, bookingId int) (bookings.Domain, error) {
+	var listBooking []Bookings
+	var bookingDetail BookingDetail
+
+	result := rep.Conn.Model(&listBooking).Select("bookings.id, bookings.number_seat, bookings.quantity, bookings.total_price, bookings.qr_code, movies.title as title_movie, movies.poster as poster_movie, cinemas.name as name_cinema, time_schedules.time_movie as time").Joins("JOIN time_schedules on bookings.time_schedule_id = time_schedules.id").Joins("JOIN schedules on time_schedules.schedule_id = schedules.id").Joins("JOIN movies on schedules.movie_id = movies.id").Joins("JOIN cinemas on schedules.cinema_id = cinemas.id").Where("bookings.id = ?", bookingId).Scan(&bookingDetail)
+
+	if result.Error != nil {
+		return bookings.Domain{}, result.Error
+	}
+
+	return bookingDetail.ToDomainDetail(), nil
+}

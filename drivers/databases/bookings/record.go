@@ -5,6 +5,18 @@ import (
 	"time"
 )
 
+type BookingDetail struct {
+	ID          int
+	NumberSeat  string
+	Quantity    int
+	TotalPrice  int
+	QrCode      string
+	TitleMovie  string
+	PosterMovie string
+	NameCinema  string
+	Time        time.Time
+}
+
 type Bookings struct {
 	ID             int `gorm:"primaryKey"`
 	UserId         int
@@ -30,6 +42,24 @@ func (booking *Bookings) ToDomain() bookings.Domain {
 		Status:         booking.Status,
 		CreatedAt:      booking.CreatedAt,
 		UpdatedAt:      booking.UpdatedAt,
+	}
+}
+
+func (booking *BookingDetail) ToDomainDetail() bookings.Domain {
+	detailBooking := bookings.DomainJoin{
+		TitleMovie:  booking.TitleMovie,
+		PosterMovie: booking.PosterMovie,
+		NameCinema:  booking.NameCinema,
+		Time:        booking.Time,
+	}
+
+	return bookings.Domain{
+		ID:         booking.ID,
+		NumberSeat: booking.NumberSeat,
+		Quantity:   booking.Quantity,
+		TotalPrice: booking.TotalPrice,
+		QrCode:     booking.QrCode,
+		Detail:     detailBooking,
 	}
 }
 
