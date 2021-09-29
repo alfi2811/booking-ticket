@@ -3,14 +3,17 @@ package schedules
 import (
 	"booking-ticket/business/cinemas"
 	"booking-ticket/business/movies"
+
+	// movieDB "booking-ticket/drivers/databases/movies"
 	"booking-ticket/business/schedules"
 	"booking-ticket/drivers/databases/timeSchedules"
 	"time"
 )
 
 type Schedules struct {
-	ID           int `gorm:"primaryKey"`
-	MovieId      int
+	ID      int `gorm:"primaryKey"`
+	MovieId int
+	// Movie moviesDB
 	CinemaId     int
 	Date         time.Time
 	Price        int

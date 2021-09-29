@@ -25,6 +25,11 @@ type CinemaResponse struct {
 	UpdatedAt   time.Time
 }
 
+// type CinemaDetaillResponose struct {
+// 	CinemaResponse,
+// 	m
+// }
+
 func FromDomain(domain cinemas.Domain) CinemaResponse {
 	return CinemaResponse{
 		ID:          domain.ID,
