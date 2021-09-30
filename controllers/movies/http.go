@@ -32,7 +32,7 @@ func (movieController MovieController) AddMovie(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(movie))
+	return controllers.NewSuccesResponse(c, responses.FromDomainDetail(movie))
 }
 
 func (movieController MovieController) ListMovie(c echo.Context) error {

@@ -2,6 +2,7 @@ package admins
 
 import (
 	"booking-ticket/app/middlewares"
+	"booking-ticket/helpers/encrypt"
 	"context"
 	"errors"
 	"time"
@@ -31,6 +32,10 @@ func (uc *AdminUsecase) Login(ctx context.Context, email string, password string
 	}
 
 	user, err := uc.Repo.Login(ctx, email, password)
+	temp := encrypt.ValidateHash(password, user.Password)
+	if !temp {
+		return Domain{}, errors.New("password wrong")
+	}
 
 	if err != nil {
 		return Domain{}, err
@@ -43,12 +48,15 @@ func (uc *AdminUsecase) Login(ctx context.Context, email string, password string
 }
 
 func (uc *AdminUsecase) Register(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.Email == "" {
-		return Domain{}, errors.New("email empty")
+	if domain.Email == "" || domain.Password == "" {
+		return Domain{}, errors.New("please input all field")
 	}
-	if domain.Password == "" {
-		return Domain{}, errors.New("password empty")
+	var errPass error
+	domain.Password, errPass = encrypt.Hash(domain.Password)
+	if errPass != nil {
+		return Domain{}, errPass
 	}
+
 	user, err := uc.Repo.Register(ctx, domain)
 
 	if err != nil {

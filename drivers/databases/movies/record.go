@@ -19,7 +19,6 @@ type Movies struct {
 	UpdatedAt    time.Time
 	Schedule     []schedules.Schedules `gorm:"foreignKey:MovieId;references:ID"`
 }
-type UsersArr []Movies
 
 func (movie *Movies) ToDomain() movies.Domain {
 	return movies.Domain{

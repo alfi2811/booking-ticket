@@ -20,8 +20,7 @@ func NewMysqlUserRepository(conn *gorm.DB) users.Repository {
 
 func (rep *MysqlUserRepository) Login(ctx context.Context, email string, password string) (users.Domain, error) {
 	var user Users
-	result := rep.Conn.First(&user, "email = ? AND password = ?",
-		email, password)
+	result := rep.Conn.First(&user, "email = ? ", email)
 
 	if result.Error != nil {
 		return users.Domain{}, result.Error

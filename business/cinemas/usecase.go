@@ -42,8 +42,8 @@ func (cc *CinemaUsecase) ListCinema(ctx context.Context) ([]Domain, error) {
 	return movie, nil
 }
 
-func (cc *CinemaUsecase) CinemaDetail(ctx context.Context) (Domain, error) {
-	movie, err := cc.Repo.CinemaDetail(ctx)
+func (cc *CinemaUsecase) CinemaDetail(ctx context.Context, cinemaId int) (Domain, error) {
+	movie, err := cc.Repo.CinemaDetail(ctx, cinemaId)
 
 	if err != nil {
 		return Domain{}, err

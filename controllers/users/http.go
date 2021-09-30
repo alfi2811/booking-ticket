@@ -5,7 +5,6 @@ import (
 	"booking-ticket/controllers"
 	"booking-ticket/controllers/users/requests"
 	"booking-ticket/controllers/users/responses"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -22,7 +21,6 @@ func NewUserController(userUseCase users.Usecase) *UserController {
 }
 
 func (userController UserController) Login(c echo.Context) error {
-	fmt.Println("Login")
 	userLogin := requests.UserLogin{}
 	c.Bind(&userLogin)
 
@@ -30,14 +28,18 @@ func (userController UserController) Login(c echo.Context) error {
 	user, error := userController.UserUseCase.Login(ctx, userLogin.Email, userLogin.Password)
 
 	if error != nil {
+		if error.Error() == "password wrong" {
+			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
+		} else if error.Error() == "email empty" || error.Error() == "password empty" {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainLogin(user))
 }
 
 func (userController UserController) Register(c echo.Context) error {
-	fmt.Println("Login")
 	userRegister := requests.UserRegister{}
 	c.Bind(&userRegister)
 
@@ -45,6 +47,11 @@ func (userController UserController) Register(c echo.Context) error {
 	user, error := userController.UserUseCase.Register(ctx, userRegister.ToDomain())
 
 	if error != nil {
+		if error.Error() == "password wrong" {
+			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
+		} else if error.Error() == "please input all field" {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
@@ -59,7 +66,7 @@ func (userController UserController) GetUser(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, user)
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(user))
 }
 
 func (userController UserController) ListUserBooking(c echo.Context) error {

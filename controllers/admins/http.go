@@ -5,7 +5,6 @@ import (
 	"booking-ticket/controllers"
 	"booking-ticket/controllers/admins/requests"
 	"booking-ticket/controllers/admins/responses"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -29,6 +28,11 @@ func (adminController AdminController) Login(c echo.Context) error {
 	user, error := adminController.AdminUseCase.Login(ctx, adminLogin.Email, adminLogin.Password)
 
 	if error != nil {
+		if error.Error() == "password wrong" {
+			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
+		} else if error.Error() == "email empty" || error.Error() == "password empty" {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
@@ -36,18 +40,22 @@ func (adminController AdminController) Login(c echo.Context) error {
 }
 
 func (adminController AdminController) Register(c echo.Context) error {
-	fmt.Println("Login")
-	userRegister := requests.AdminRegister{}
-	c.Bind(&userRegister)
+	adminRegister := requests.AdminRegister{}
+	c.Bind(&adminRegister)
 
 	ctx := c.Request().Context()
-	user, error := adminController.AdminUseCase.Register(ctx, userRegister.ToDomain())
+	admin, error := adminController.AdminUseCase.Register(ctx, adminRegister.ToDomain())
 
 	if error != nil {
+		if error.Error() == "password wrong" {
+			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
+		} else if error.Error() == "please input all field" {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainAdd(admin))
 }
 
 func (adminController AdminController) GetAdmin(c echo.Context) error {
