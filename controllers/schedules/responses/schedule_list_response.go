@@ -18,12 +18,16 @@ type ScheduleCinema struct {
 }
 
 type ScheduleListResponse struct {
-	ID     int                              `json:"id" `
-	Movie  ScheduleMovie                    `json:"movie"`
-	Cinema ScheduleCinema                   `json:"cinema"`
-	Time   []responses.TimeScheduleResponse `json:"time"`
-	Date   time.Time                        `json:"date"`
-	Price  int                              `json:"price"`
+	ID     int            `json:"id" `
+	Movie  ScheduleMovie  `json:"movie"`
+	Cinema ScheduleCinema `json:"cinema"`
+	Date   time.Time      `json:"date"`
+	Price  int            `json:"price"`
+}
+
+type ScheduleDetail struct {
+	Schedule ScheduleListResponse             `json:"schedule"`
+	Time     []responses.TimeScheduleResponse `json:"time"`
 }
 
 func FromDomainJoin(domain schedules.Domain) ScheduleListResponse {
@@ -43,7 +47,13 @@ func FromDomainJoin(domain schedules.Domain) ScheduleListResponse {
 		Cinema: scheduleCinema,
 		Date:   domain.Date,
 		Price:  domain.Price,
-		Time:   responses.FromListDomain(domain.Time),
+	}
+}
+
+func FromDetailJoin(domain schedules.Domain) ScheduleDetail {
+	return ScheduleDetail{
+		Schedule: FromDomainJoin(domain),
+		Time:     responses.FromListDomain(domain.Time),
 	}
 }
 

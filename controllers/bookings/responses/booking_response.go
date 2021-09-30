@@ -26,6 +26,8 @@ func FromDomain(domain bookings.Domain) BookingResponse {
 		Quantity:       domain.Quantity,
 		TotalPrice:     domain.TotalPrice,
 		QrCode:         domain.QrCode,
+		CreatedAt:      domain.CreatedAt,
+		UpdatedAt:      domain.UpdatedAt,
 	}
 }
 
