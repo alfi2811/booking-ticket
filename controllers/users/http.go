@@ -36,7 +36,7 @@ func (userController UserController) Login(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainLogin(user))
 }
 
 func (userController UserController) Register(c echo.Context) error {
@@ -66,7 +66,7 @@ func (userController UserController) GetUser(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, user)
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(user))
 }
 
 func (userController UserController) ListUserBooking(c echo.Context) error {

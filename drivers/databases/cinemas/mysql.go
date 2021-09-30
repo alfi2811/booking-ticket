@@ -41,12 +41,12 @@ func (rep *MysqlCinemaRepository) ListCinema(ctx context.Context) ([]cinemas.Dom
 	return ToListDomain(listCinema), nil
 }
 
-func (rep *MysqlCinemaRepository) CinemaDetail(ctx context.Context) (cinemas.Domain, error) {
+func (rep *MysqlCinemaRepository) CinemaDetail(ctx context.Context, cinemaId int) (cinemas.Domain, error) {
 	var cinema Cinemas
 	var schedules []schedules.Schedules
 	var detail []cinemas.CinemaDetail
 	// var domainUser []users.Domain
-	result := rep.Conn.Where("id = ?", 1).Preload("Schedule").First(&cinema)
+	result := rep.Conn.Where("id = ?", cinemaId).Preload("Schedule").First(&cinema)
 	resultt := rep.Conn.Model(&schedules).Select("schedules.id, movies.id as id_movie , movies.title, movies.poster, movies.duration, schedules.date, schedules.price").Joins("left join movies on schedules.movie_id = movies.id").Joins("JOIN cinemas on schedules.cinema_id = cinemas.id").Where("cinemas.id = ?", 1).Scan(&detail)
 
 	if result.Error != nil && resultt.Error != nil {

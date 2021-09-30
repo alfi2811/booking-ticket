@@ -13,8 +13,8 @@ type AdminAddResponse struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func FromDomainAdd(domain admins.Domain) AdminResponse {
-	return AdminResponse{
+func FromDomainAdd(domain admins.Domain) AdminAddResponse {
+	return AdminAddResponse{
 		ID:        domain.ID,
 		Fullname:  domain.Fullname,
 		Email:     domain.Email,

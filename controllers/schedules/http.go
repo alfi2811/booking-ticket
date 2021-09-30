@@ -55,5 +55,5 @@ func (scheduleController ScheduleController) DetailTimeSchedule(c echo.Context) 
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomainJoin(schedules))
+	return controllers.NewSuccesResponse(c, responses.FromDetailJoin(schedules))
 }

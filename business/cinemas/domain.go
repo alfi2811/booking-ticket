@@ -30,11 +30,11 @@ type Domain struct {
 type Usecase interface {
 	AddCinema(ctx context.Context, domain Domain) (Domain, error)
 	ListCinema(ctx context.Context) ([]Domain, error)
-	CinemaDetail(ctx context.Context) (Domain, error)
+	CinemaDetail(ctx context.Context, cinemaId int) (Domain, error)
 }
 
 type Repository interface {
 	AddCinema(ctx context.Context, domain Domain) (Domain, error)
 	ListCinema(ctx context.Context) ([]Domain, error)
-	CinemaDetail(ctx context.Context) (Domain, error)
+	CinemaDetail(ctx context.Context, cinemaId int) (Domain, error)
 }

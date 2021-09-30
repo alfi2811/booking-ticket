@@ -13,7 +13,11 @@ type UserResponse struct {
 	Phone     string    `json:"phone"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
-	Token     string    `json:"token"`
+}
+
+type UserLoginResponse struct {
+	User  UserResponse `json:"user"`
+	Token string       `json:"token"`
 }
 
 func FromDomain(domain users.Domain) UserResponse {
@@ -23,8 +27,31 @@ func FromDomain(domain users.Domain) UserResponse {
 		Email:     domain.Email,
 		Gender:    domain.Gender,
 		Phone:     domain.Phone,
-		Token:     domain.Token,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
+	}
+}
+
+func FromListDomain(data []users.Domain) (result []UserResponse) {
+	result = []UserResponse{}
+	for _, user := range data {
+		result = append(result, FromDomain(user))
+	}
+	return
+}
+
+func FromDomainLogin(domain users.Domain) UserLoginResponse {
+	user := UserResponse{
+		ID:        domain.ID,
+		Fullname:  domain.Fullname,
+		Email:     domain.Email,
+		Gender:    domain.Gender,
+		Phone:     domain.Phone,
+		CreatedAt: domain.CreatedAt,
+		UpdatedAt: domain.UpdatedAt,
+	}
+	return UserLoginResponse{
+		User:  user,
+		Token: domain.Token,
 	}
 }

@@ -39,7 +39,7 @@ func (cl *ControllerList) RouteUsers(e *echo.Group) {
 
 func (cl *ControllerList) RouteAdmins(e *echo.Group) {
 	e.POST("admins/login", cl.AdminController.Login)
-	e.POST("admins/register", cl.AdminController.Register)
+	e.POST("admins/register", cl.AdminController.Register, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 	e.GET("admins", cl.AdminController.GetAdmin, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
@@ -51,7 +51,7 @@ func (cl *ControllerList) RouteMovies(e *echo.Group) {
 
 func (cl *ControllerList) RouteCinemas(e *echo.Group) {
 	e.GET("cinema", cl.CinemaController.ListCinema, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("cinema/detail", cl.CinemaController.CinemaDetail, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("cinema/:id", cl.CinemaController.CinemaDetail, middleware.JWTWithConfig(cl.JwtConfig))
 	e.POST("cinema", cl.CinemaController.AddCinema, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
