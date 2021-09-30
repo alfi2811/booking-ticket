@@ -1,0 +1,24 @@
+{
+  "debug": true,
+  "server": {
+    "address": ":1323"
+  },
+  "context":{
+    "timeout":2
+  },
+  "database": {
+      "host": "localhost",
+      "port": "3306",
+      "user": "root",
+      "pass": "",
+      "name": "booking_ticket"
+  },
+  "jwt" : {
+    "secret" : "kampusmerdeka#212",
+    "expired" : 72
+  },
+  "jwtAdmin" : {
+    "secret" : "adminBookingTicket#2811",
+    "expired" : 72
+  }
+}
