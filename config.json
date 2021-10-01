@@ -7,11 +7,11 @@
     "timeout":2
   },
   "database": {
-      "host": "localhost",
+      "host": "db-booking-ticket.ckx9ptuuqzez.us-east-2.rds.amazonaws.com",
       "port": "3306",
-      "user": "root",
-      "pass": "",
-      "name": "booking_ticket"
+      "user": "admin12345",
+      "pass": "admin12345",
+      "name": "db-booking-ticket"
   },
   "jwt" : {
     "secret" : "kampusmerdeka#212",
