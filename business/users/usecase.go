@@ -32,10 +32,10 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	}
 
 	user, err := uc.Repo.Login(ctx, email, password)
-	temp := encrypt.ValidateHash(password, user.Password)
-	if !temp {
-		return Domain{}, errors.New("password wrong")
-	}
+	// temp := encrypt.ValidateHash(password, user.Password)
+	// if !temp {
+	// 	return Domain{}, errors.New("password wrong")
+	// }
 	if err != nil {
 		return Domain{}, err
 	}
