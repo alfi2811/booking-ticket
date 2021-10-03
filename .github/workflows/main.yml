@@ -56,7 +56,7 @@ jobs:
             IdentityFile ~/.ssh/alterra_academy_aws.pem
             StrictHostKeyChecking=no
           END
-      - name: Connect EC2 && Remove All container & pull from registry & start
+      - name: Connect EC2 & Remove All container & pull from registry & start
         run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull alfinst/booking_ticket:1.0.0 && docker run -d -p 8000:8000 --name booking_ticket alfinst/booking_ticket:1.0.0'
     
 
