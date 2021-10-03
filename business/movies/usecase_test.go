@@ -22,9 +22,35 @@ func setup() {
 		Title:        "Fast and Furious",
 		Poster:       "cdn.hdfhdjdjd",
 		Duration:     "2 Jam 2 Minutes",
+		Players:      "angga chandra",
 		MovieTrailer: "youtube.com/wjjwjw",
 		Status:       1,
 	}
+}
+
+func TestAddMovie(t *testing.T) {
+	setup()
+	movieRepository.On("AddMovie",
+		mock.Anything,
+		mock.AnythingOfType("Domain")).Return(movies.Domain{}, nil).Once()
+
+	t.Run("Test Case 1 | Valid Add Cinema", func(t *testing.T) {
+		_, err := movieService.AddMovie(context.Background(), movieDomain)
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test Case 2 | Invalid Add Cinema Field Empty", func(t *testing.T) {
+		_, err := movieService.AddMovie(context.Background(), movies.Domain{
+			Title:        "Fast and Furious",
+			Poster:       "cdn.hdfhdjdjd",
+			Duration:     "2 Jam 2 Minutes",
+			Players:      "",
+			MovieTrailer: "youtube.com/wjjwjw",
+		})
+
+		assert.NotNil(t, err)
+	})
 }
 
 func TestListMovie(t *testing.T) {

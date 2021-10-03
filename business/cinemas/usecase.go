@@ -19,7 +19,7 @@ func NewCinemaUsecase(repo Repository, timeout time.Duration) Usecase {
 }
 
 func (uc *CinemaUsecase) AddCinema(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.Name == "" || domain.Location == "" {
+	if domain.Name == "" || domain.Location == "" || domain.Maps == "" || domain.Phone == "" {
 		return Domain{}, errors.New("please input all field")
 	}
 	user, err := uc.Repo.AddCinema(ctx, domain)

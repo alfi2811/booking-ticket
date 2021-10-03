@@ -44,6 +44,16 @@ func TestRegister(t *testing.T) {
 		assert.Nil(t, err)
 		assert.NotEqual(t, "aaa@gmail.com", admin.Email)
 	})
+
+	t.Run("Test Case 2 | invalid empty field", func(t *testing.T) {
+		_, err := adminService.Register(context.Background(), admins.Domain{
+			Email:    "al@gmail.com",
+			Password: "",
+			Fullname: "alfi",
+		})
+
+		assert.NotNil(t, err)
+	})
 }
 
 func TestLogin(t *testing.T) {
@@ -57,5 +67,28 @@ func TestLogin(t *testing.T) {
 
 		assert.Nil(t, err)
 		assert.Equal(t, "alfi", admin.Fullname)
+	})
+
+	t.Run("Test Case 2 | Invalid Empty Email", func(t *testing.T) {
+		_, err := adminService.Login(context.Background(), "", "123")
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 3 | Invalid Empty Password", func(t *testing.T) {
+		_, err := adminService.Login(context.Background(), "al@gmail.com", "")
+
+		assert.NotNil(t, err)
+	})
+}
+
+func TestGetAdmin(t *testing.T) {
+	setup()
+	adminRepository.On("GetAdmin",
+		mock.Anything).Return([]admins.Domain{}, nil).Once()
+	t.Run("Test Case 1 | Valid Get Admin", func(t *testing.T) {
+		_, err := adminService.GetAdmin(context.Background())
+
+		assert.Nil(t, err)
 	})
 }

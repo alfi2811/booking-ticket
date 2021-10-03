@@ -19,7 +19,10 @@ func NewScheduleUsecase(repo Repository, timeout time.Duration) Usecase {
 }
 
 func (uc *ScheduleUsecase) AddSchedule(ctx context.Context, domain Domain) (Domain, error) {
-	if domain.MovieId == 0 || domain.CinemaId == 0 || domain.Price == 0 {
+	if domain.MovieId == 0 || domain.CinemaId == 0 {
+		return Domain{}, errors.New("please input movie or cinema id")
+	}
+	if domain.Price == 0 {
 		return Domain{}, errors.New("please input all field")
 	}
 	user, err := uc.Repo.AddSchedule(ctx, domain)
