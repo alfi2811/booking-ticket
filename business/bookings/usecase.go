@@ -20,6 +20,9 @@ func NewBookingUsecase(repo Repository, timeout time.Duration) Usecase {
 }
 
 func (uc *BookingUsecase) AddBooking(ctx context.Context, domain Domain) (Domain, error) {
+	if domain.UserId == 0 || domain.TimeScheduleId == 0 {
+		return Domain{}, errors.New("please input user or time schedule id")
+	}
 	if domain.NumberSeat == "" || domain.Quantity == 0 || domain.TotalPrice == 0 {
 		return Domain{}, errors.New("please input all field")
 	}
@@ -32,28 +35,28 @@ func (uc *BookingUsecase) AddBooking(ctx context.Context, domain Domain) (Domain
 	return user, nil
 }
 func (bc *BookingUsecase) ListBooking(ctx context.Context) ([]Domain, error) {
-	movie, err := bc.Repo.ListBooking(ctx)
+	booking, err := bc.Repo.ListBooking(ctx)
 
 	if err != nil {
 		return []Domain{}, err
 	}
-	return movie, nil
+	return booking, nil
 }
 
 func (bc *BookingUsecase) ListBookingUser(ctx context.Context, userId int) ([]DomainJoin, error) {
-	movie, err := bc.Repo.ListBookingUser(ctx, userId)
+	booking, err := bc.Repo.ListBookingUser(ctx, userId)
 
 	if err != nil {
 		return []DomainJoin{}, err
 	}
-	return movie, nil
+	return booking, nil
 }
 
 func (bc *BookingUsecase) DetailBooking(ctx context.Context, bookingId int) (Domain, error) {
-	movie, err := bc.Repo.DetailBooking(ctx, bookingId)
+	booking, err := bc.Repo.DetailBooking(ctx, bookingId)
 
 	if err != nil {
 		return Domain{}, err
 	}
-	return movie, nil
+	return booking, nil
 }
