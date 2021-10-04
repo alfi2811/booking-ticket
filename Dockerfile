@@ -14,5 +14,5 @@ FROM alpine:3.14
 WORKDIR /root/
 COPY --from=builder /app/config.json .
 COPY --from=builder /app/main .
-EXPOSE 8080
+EXPOSE 8000
 CMD ["./main"]

@@ -16,18 +16,18 @@ type DetailResponse struct {
 }
 
 type CinemaResponse struct {
-	ID        int    `json:"id" `
-	Name      string `json:"name"`
-	Location  string `json:"location"`
-	Maps      string `json:"maps"`
-	Phone     string `json:"phone"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        int       `json:"id" `
+	Name      string    `json:"name"`
+	Location  string    `json:"location"`
+	Maps      string    `json:"maps"`
+	Phone     string    `json:"phone"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type CinemaDetaillResponse struct {
 	CinemaResponse CinemaResponse   `json:"cinema"`
-	CinemaDetail   []DetailResponse `json:"scehdule"`
+	CinemaDetail   []DetailResponse `json:"schedule"`
 }
 
 func FromDomain(domain cinemas.Domain) CinemaResponse {
