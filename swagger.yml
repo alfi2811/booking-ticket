@@ -13,10 +13,10 @@ info:
 
 # tags are used for organizing operations
 tags:
-- name: auth
-  description: Operations available to regular users
 - name: users
   description: Operations available to regular users
+- name: admins
+  description: Operations available to regular admins
 - name: cinema
   description: Operations available to regular users
 - name: movie
@@ -128,6 +128,113 @@ paths:
                     example: "successfull"
               data:
                 $ref: '#/definitions/responseUser'                
+        500:
+          description: Internal server error  
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+  /admins:
+    get:
+      tags:
+      - admins
+      summary: list admins
+      operationId: listAdmins
+      description: |
+        By accessing this, will show list of aadmins in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: list of admins that regist in booking ticket          
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/responseAdmin'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'            
+  /admins/login:
+    post:
+      tags:
+      - admins
+      summary: login for users
+      operationId: loginUsers
+      description: |
+        for accessing to booking ticket
+      produces:
+      - application/json      
+      parameters:
+      - in: body
+        name: userData
+        description: user data to check
+        schema:
+          $ref: '#/definitions/requestAdminLogin'
+      responses:
+        200:
+          description: success to login as user
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                $ref: '#/definitions/responseAdminLogin'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+  /admins/register:
+    post:
+      tags:
+      - admins
+      summary: registration for user
+      operationId: registUser
+      description: |
+        By accessing this, user data will add in table users
+      produces:
+      - application/json      
+      parameters:
+      - in: body
+        name: user
+        description: user data to add
+        schema:
+          $ref: '#/definitions/requestAdminRegister'
+      responses:
+        200:
+          description: success response
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                $ref: '#/definitions/responseAdmin'                
         500:
           description: Internal server error  
           schema:
@@ -367,10 +474,10 @@ paths:
                   message:
                     type: string
                     example: "successfull"
-              data:                                                        
+              data:
                 type: array
                 items:
-                  $ref: '#/definitions/schemaSchedule'          
+                  $ref: '#/definitions/responseSchedule'
         500:
           description: Internal server error
           schema:
@@ -394,11 +501,91 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseScheduleAdd'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                
+                $ref: '#/definitions/schemaSchedule'
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
+  /schedule/{scheduleId}:
+    get:
+      tags:
+      - schedule
+      summary: detail schedule
+      operationId: detailSchedule
+      description: |
+        By accessing this, will show detail of schedule in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: detail of schedule in booking ticket
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                
+                $ref: '#/definitions/responseScheduleDetail'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
+  /schedule/time:
+    post:
+      tags:
+      - schedule
+      summary: create time schedule
+      operationId: timeSchedule
+      description: |
+        By accessing this, will create time schedule
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: user's booking data 
+        schema:
+          $ref: '#/definitions/requestScheduleTimeAdd'             
+      responses:
+        200:
+          description: list of users that regist in booking ticket
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                            
+                $ref: '#/definitions/schemaScheduleTime'
+        500:
+          description: Internal server error    
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
   /booking:
     get:
       tags:
@@ -413,11 +600,25 @@ paths:
         200:
           description: success get list of booking in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/schemaBooking'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                                        
+                type: array
+                items:
+                  $ref: '#/definitions/schemaBooking'
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
       - schedule
@@ -436,12 +637,88 @@ paths:
       responses:
         200:
           description: response success to add booking data
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseBookingAdd'
+          schema:            
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                            
+                $ref: '#/definitions/schemaBooking'
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+  /booking/{bookingId}:
+    get:
+      tags:
+      - schedule
+      summary: Detail booking
+      operationId: detailBooking
+      description: |
+        By accessing this, will show detail of booking in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: success get detail of booking in booking ticket
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                                        
+                type: array
+                items:
+                  $ref: '#/definitions/responseBookingDetail'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
+  /booking/user/{userId}:
+    get:
+      tags:
+      - schedule
+      summary: List User booking
+      operationId: listUserBooking
+      description: |
+        By accessing this, will show list of user booking in booking ticket
+      produces:
+      - application/json      
+      responses:
+        200:
+          description: success get list of user booking in booking ticket
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                                                        
+                $ref: '#/definitions/responseBookingUser'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
 
 definitions:
   internalServerErrResponse:
@@ -525,7 +802,7 @@ definitions:
         example: 'al@gmail.com'
       fullname:
         type: string
-        example: 'al@gmail.com'
+        example: 'Alfi Syahri'
       gender:
         type: string
         example: 'al@gmail.com'
@@ -537,7 +814,7 @@ definitions:
         example: '2020-02-02 18:20:20'
       updatedAt:
         type: string
-        example: '2020-02-02 18:20:20'      
+        example: '2020-02-02 18:20:20'        
   requestRegister:
     type: object
     required:    
@@ -561,7 +838,7 @@ definitions:
         example: Laki - Laki
       phone:
         type: string
-        example: '081270826621'
+        example: '081270826621'        
   responseRegister:
     type: object    
     properties:
@@ -584,7 +861,7 @@ definitions:
         example: alfi@gmail.com
       password:
         type: string
-        example: al28Sep2118  
+        example: al28Sep2118    
   responseUserLogin:
     type: object    
     properties:
@@ -592,7 +869,61 @@ definitions:
         $ref: '#/definitions/responseUser'      
       token:
         type: string
-        example: 8270128732niua8dan2i2n28ndih  
+        example: 8270128732niua8dan2i2n28ndih    
+  responseAdmin:
+    type: object    
+    properties:                
+      id:
+        type: integer
+        example: 1
+      email:
+        type: string
+        example: 'al@gmail.com'
+      fullname:
+        type: string
+        example: 'Alfi Syahri'      
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20' 
+  requestAdminLogin:
+    type: object
+    required:    
+    - email
+    - password    
+    properties:      
+      email:
+        type: string
+        example: alfi@gmail.com
+      password:
+        type: string
+        example: al28Sep2118       
+  responseAdminLogin:
+    type: object      
+    properties:      
+      admin:        
+        $ref: '#/definitions/responseAdmin'      
+      token:
+        type: string
+        example: 'weqweu1h838137bjbeb#$jwn'            
+  requestAdminRegister:
+    type: object
+    required:    
+    - email
+    - password
+    - fullname    
+    properties:      
+      email:
+        type: string
+        example: alfi@gmail.com
+      password:
+        type: string
+        example: al28Sep2118
+      fullname:
+        type: string
+        example: Muhammad Alfi Syahri
   responseCinema:
     type: object    
     properties:      
@@ -667,16 +998,16 @@ definitions:
                   example: 'Shang Chi'
                 poster:
                   type: string
-                  example: 'Shang Chi'
+                  example: 'https://dummyimage.com/400x600/000/fff'
                 duration:
                   type: string
-                  example: 'Shang Chi'
+                  example: '2 Jam 1 Menit'
                 date:
                   type: string
                   example: '2021-02-01'
                 price:
                   type: integer
-                  example: 1                
+                  example: 40000                
   responseMovie:
     type: object    
     properties:      
@@ -712,16 +1043,16 @@ definitions:
         example: link_cdn
       duration:
         type: string
-        example: 2h 1min
-      release_date:
-        type: string
-        example: '2021-09-15T11:46:39.000000Z'
+        example: 2h 1min      
       movie_trailer:
         type: string
         example: youtube.com/jwjndwjndw
       players:
         type: string
         example: Tom Holland, Zendaya, Chris Evans      
+      release_date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
       createdAt:
         type: string
         example: '2020-02-02 18:20:20'
@@ -746,6 +1077,9 @@ definitions:
       release_date:
         type: string
         example: '2021-09-15T11:46:39.000000Z'
+      duration:
+        type: string
+        example: 2 jam 2 menit
       movie_trailer:
         type: string
         example: youtube.com/jwjndwjndw
@@ -829,35 +1163,120 @@ definitions:
         type: integer
         example: 50000
 
+  responseSchedule:
+    type: object    
+    properties:
+      id:
+        type: integer
+        example: 1
+      movie:
+        type: object
+        properties:
+          title:
+            type: string
+            example: 'Shangchi'
+          poster:
+            type: string
+            example: 'https://dummyimage.com/400x600/000/fff'
+          duration:
+            type: string
+            example: '2 jam 40 menit'
+      cinema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'Puri Indah XXI'
+          maps:
+            type: string
+            example: 'maps.google.com/widjwndwi'      
+      date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      price:
+        type: integer
+        example: 50000
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'  
   responseScheduleDetail:
     type: object    
     properties:      
-      data:
+      schedule:
         $ref: '#/definitions/schemaSchedule'
+      time:
+        type: array
+        items:
+          $ref: '#/definitions/schemaScheduleTime'
+  schemaScheduleTime:
+    type: object    
+    properties:
+      id:
+        type: integer
+        example: 1
+      scheduleId:
+        type: integer
+        example: 2
+      timeMovie:
+        type: string
+        example: '2020-02-02 18:20:20'
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'   
+  requestScheduleTimeAdd:    
+    type: object
+    required:    
+    - scheduleId
+    - timeMovie    
+    properties:      
+      scheduleId:
+        type: integer
+        example: 2
+      timeMovie:
+        type: string
+        example: '2020-02-02 18:20:20'
   schemaBooking:
     type: object    
     properties:
-      user_id:
+      id:
         type: integer
         example: 1
-      time_schedule_id:
+      userId:
+        type: integer
+        example: 1
+      timeScheduleId:
         type: integer
         example: 2
-      no_seat:
+      numberSeat:
         type: string
         example: H14
-      qty:
+      quantity:
         type: integer
         example: 1
-      total_price:
+      totalPrice:
         type: integer
         example: 40000
+      qrcode:
+        type: string
+        example: 'https://api.qrserver.com/v1/create-qr-code/?data={UserId:1,TimeScheduleId:1}&size=100x100'
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'  
   requestBookingAdd:
     type: object
     required:    
     - user_id
     - time_schedule_id
-    - no_seat
+    - number_seat
     - qty
     - total_price  
     properties:
@@ -867,7 +1286,7 @@ definitions:
       time_schedule_id:
         type: integer
         example: 2
-      no_seat:
+      number_seat:
         type: string
         example: H14
       qty:
@@ -876,6 +1295,54 @@ definitions:
       total_price:
         type: integer
         example: 40000
+  responseBookingUser:
+    type: object    
+    properties:
+      id:
+        type: integer
+        example: 1      
+      titileMovie:
+        type: string
+        example: 'Shangchi'
+      posterMovie:
+        type: string
+        example: 'https://dummyimage.com/400x600/000/fff'
+      name:
+        type: string
+        example: 'Puri Indah XXI'
+      timeSchedule:
+        type: string
+        example: '2020-02-02 18:20:20'      
+  responseBookingDetail:
+    type: object    
+    properties:
+      id:
+        type: integer
+        example: 1      
+      titileMovie:
+        type: string
+        example: 'Shangchi'
+      posterMovie:
+        type: string
+        example: 'https://dummyimage.com/400x600/000/fff'
+      name:
+        type: string
+        example: 'Puri Indah XXI'
+      timeSchedule:
+        type: string
+        example: '2020-02-02 18:20:20'      
+      numberSeat:
+        type: string
+        example: H14
+      quantity:
+        type: integer
+        example: 1
+      totalPrice:
+        type: integer
+        example: 40000
+      qrcode:
+        type: string
+        example: 'https://api.qrserver.com/v1/create-qr-code/?data={UserId:1,TimeScheduleId:1}&size=100x100'
   responseBookingeAdd:
     type: object    
     properties:
