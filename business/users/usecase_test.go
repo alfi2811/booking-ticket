@@ -2,8 +2,10 @@ package users_test
 
 import (
 	_middleware "booking-ticket/app/middlewares"
+	"booking-ticket/business"
 	"booking-ticket/business/users"
 	_mockRepository "booking-ticket/business/users/mocks"
+	"booking-ticket/helpers/encrypt"
 	"context"
 	"testing"
 	"time"
@@ -37,6 +39,7 @@ func setup() {
 
 func TestLogin(t *testing.T) {
 	setup()
+	userDomain.Password, _ = encrypt.Hash(userDomain.Password)
 	userRepository.On("Login",
 		mock.Anything,
 		mock.AnythingOfType("string"),
@@ -46,7 +49,8 @@ func TestLogin(t *testing.T) {
 		admin, err := userService.Login(context.Background(), "al@gmail.com", "123")
 
 		assert.Nil(t, err)
-		assert.Equal(t, "alfi", admin.Fullname)
+		assert.Equal(t, userDomain.Fullname, admin.Fullname)
+		assert.Equal(t, userDomain.Password, admin.Password)
 	})
 	t.Run("Test Case 2 | Invalid Email Empty", func(t *testing.T) {
 		_, err := userService.Login(context.Background(), "", "123")
@@ -55,6 +59,15 @@ func TestLogin(t *testing.T) {
 	})
 	t.Run("Test Case 3 | Invalid Password Empty", func(t *testing.T) {
 		_, err := userService.Login(context.Background(), "al@gmail.com", "")
+
+		assert.NotNil(t, err)
+	})
+	t.Run("Test Case 4 | Invalid Wrong Password", func(t *testing.T) {
+		userRepository.On("Login",
+			mock.Anything,
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("string")).Return(userDomain, business.ErrPasswordWrong).Once()
+		_, err := userService.Login(context.Background(), "all@gmail.com", "12345")
 
 		assert.NotNil(t, err)
 	})
