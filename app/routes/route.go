@@ -39,7 +39,7 @@ func (cl *ControllerList) RouteUsers(e *echo.Group) {
 
 func (cl *ControllerList) RouteAdmins(e *echo.Group) {
 	e.POST("admins/login", cl.AdminController.Login)
-	e.POST("admins/register", cl.AdminController.Register, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.POST("admins/register", cl.AdminController.Register)
 	e.GET("admins", cl.AdminController.GetAdmin, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
