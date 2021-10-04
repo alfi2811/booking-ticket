@@ -2,8 +2,10 @@ package admins_test
 
 import (
 	_middleware "booking-ticket/app/middlewares"
+	"booking-ticket/business"
 	"booking-ticket/business/admins"
 	_mockRepository "booking-ticket/business/admins/mocks"
+	"booking-ticket/helpers/encrypt"
 	"context"
 	"testing"
 	"time"
@@ -58,6 +60,7 @@ func TestRegister(t *testing.T) {
 
 func TestLogin(t *testing.T) {
 	setup()
+	adminDomain.Password, _ = encrypt.Hash(adminDomain.Password)
 	adminRepository.On("Login",
 		mock.Anything,
 		mock.AnythingOfType("string"),
@@ -66,7 +69,8 @@ func TestLogin(t *testing.T) {
 		admin, err := adminService.Login(context.Background(), "al@gmail.com", "123")
 
 		assert.Nil(t, err)
-		assert.Equal(t, "alfi", admin.Fullname)
+		assert.Equal(t, adminDomain.Fullname, admin.Fullname)
+		assert.Equal(t, adminDomain.Password, admin.Password)
 	})
 
 	t.Run("Test Case 2 | Invalid Empty Email", func(t *testing.T) {
@@ -77,6 +81,16 @@ func TestLogin(t *testing.T) {
 
 	t.Run("Test Case 3 | Invalid Empty Password", func(t *testing.T) {
 		_, err := adminService.Login(context.Background(), "al@gmail.com", "")
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("Test Case 4 | Invalid Wrong Password", func(t *testing.T) {
+		adminRepository.On("Login",
+			mock.Anything,
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("string")).Return(adminDomain, business.ErrPasswordWrong).Once()
+		_, err := adminService.Login(context.Background(), "all@gmail.com", "12345")
 
 		assert.NotNil(t, err)
 	})

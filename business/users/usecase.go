@@ -2,6 +2,7 @@ package users
 
 import (
 	"booking-ticket/app/middlewares"
+	"booking-ticket/business"
 	"booking-ticket/helpers/encrypt"
 	"context"
 	"errors"
@@ -32,13 +33,15 @@ func (uc *UserUsecase) Login(ctx context.Context, email string, password string)
 	}
 
 	user, err := uc.Repo.Login(ctx, email, password)
-	// temp := encrypt.ValidateHash(password, user.Password)
-	// if !temp {
-	// 	return Domain{}, errors.New("password wrong")
-	// }
 	if err != nil {
 		return Domain{}, err
 	}
+
+	temp := encrypt.ValidateHash(password, user.Password)
+	if !temp {
+		return Domain{}, business.ErrPasswordWrong
+	}
+
 	user.Token, err = uc.ConfigJWT.GenerateToken(user.ID, "user")
 	if err != nil {
 		return Domain{}, err
