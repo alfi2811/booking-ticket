@@ -37,17 +37,31 @@ paths:
       - application/json      
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: list of users that regist in booking ticket          
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/schemaUser'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/responseUser'
         500:
           description: Internal server error
-  /auth/login:
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'            
+  /users/login:
     post:
       tags:
-      - auth
+      - users
       summary: login for users
       operationId: loginUsers
       description: |
@@ -63,14 +77,28 @@ paths:
       responses:
         200:
           description: success to login as user
-          schema:            
-            $ref: '#/definitions/responseUserLogin'
+          schema:
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                $ref: '#/definitions/responseUserLogin'
         500:
-          description: Internal server error  
-  /auth/register:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+  /users/register:
     post:
       tags:
-      - auth
+      - users
       summary: registration for user
       operationId: registUser
       description: |
@@ -87,12 +115,25 @@ paths:
         200:
           description: success response
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseRegister'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                $ref: '#/definitions/responseUser'                
         500:
           description: Internal server error  
-  /cinema:
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+            
+  /cinemas:
     get:
       tags:
       - cinema
@@ -106,11 +147,26 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseCinema'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/responseCinema'
+            
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
       - cinema
@@ -130,12 +186,24 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseCinemaAdd'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                
+                $ref: '#/definitions/responseCinema'
         500:
-          description: Internal server error  
-  /cinema/{cinemaid}:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
+  /cinemas/{cinemaid}:
     get:
       tags:
       - cinema
@@ -155,11 +223,25 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseCinemaDetail'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                
+                type: array
+                items:
+                  $ref: '#/definitions/responseCinemaDetail'
         500:
-          description: Internal server error    
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
   /movie:
     get:
       tags:
@@ -172,13 +254,27 @@ paths:
       - application/json      
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: list of users that regist in booking ticket          
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseMovie'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/responseMovie'
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
       - movie
@@ -198,11 +294,23 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/responseMovieAdd'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                            
+                $ref: '#/definitions/schemaMovie'
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
   /movie/{movieid}:
     get:
       tags:
@@ -217,11 +325,23 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/schemaDetailMovie'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                            
+                $ref: '#/definitions/schemaMovie'
         500:
           description: Internal server error    
+          schema:
+            $ref: '#/definitions/internalServerErrResponse'
   /schedule:
     get:
       tags:
@@ -236,11 +356,25 @@ paths:
         200:
           description: list of users that regist in booking ticket
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/schemaSchedule'
+            type: object    
+            properties:      
+              meta:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "successfull"
+              data:                                                        
+                type: array
+                items:
+                  $ref: '#/definitions/schemaSchedule'          
         500:
           description: Internal server error
+          schema:
+            $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
       - schedule
@@ -309,7 +443,56 @@ paths:
         500:
           description: Internal server error
 
-definitions:  
+definitions:
+  internalServerErrResponse:
+    type: object    
+    properties:      
+      meta:
+        type: object
+        properties:
+          status:
+            type: integer
+            example: 500
+          message:
+            type: string
+            example: "Internal Server Error"
+      data:
+        type: object
+  internalServerErrArrayResponse:
+    type: object    
+    properties:      
+      meta:
+        type: object
+        properties:
+          status:
+            type: integer
+            example: 500
+          message:
+            type: string
+            example: "Internal Server Error"
+      data:
+        type: array
+        items:
+          type: object
+  baseResponse:
+    type: object    
+    properties:      
+      meta:
+        type: object
+        properties:
+          status:
+            type: integer
+            example: 200
+          message:
+            type: string
+            example: "successfull"
+      data:
+        type: object
+        properties:
+          status:
+            type: integer
+            example: 200          
+      
   schemaUser:
     type: object
     required:    
@@ -331,6 +514,30 @@ definitions:
       phone:
         type: string
         example: '081270826621'
+  responseUser:
+    type: object    
+    properties:                
+      id:
+        type: integer
+        example: 1
+      email:
+        type: string
+        example: 'al@gmail.com'
+      fullname:
+        type: string
+        example: 'al@gmail.com'
+      gender:
+        type: string
+        example: 'al@gmail.com'
+      phone:
+        type: string
+        example: 'al@gmail.com'
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'      
   requestRegister:
     type: object
     required:    
@@ -365,7 +572,7 @@ definitions:
         type: string
         example: Data User Berhasil Ditambahkan
       data:
-        $ref: '#/definitions/schemaUser'
+        $ref: '#/definitions/responseUser'
   requestUserLogin:
     type: object
     required:    
@@ -377,71 +584,47 @@ definitions:
         example: alfi@gmail.com
       password:
         type: string
-        example: al28Sep2118      
+        example: al28Sep2118  
   responseUserLogin:
     type: object    
     properties:
-      code:
-        type: string
-        example: 200
-      message:
-        type: string
-        example: Login Success
+      user:        
+        $ref: '#/definitions/responseUser'      
       token:
         type: string
         example: 8270128732niua8dan2i2n28ndih  
   responseCinema:
     type: object    
-    properties:
-      code:
-        type: string
-        example: 200
-      message:
-        type: string
-        example: List Data Cinema
-      data:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 1
-          name:
-            type: string
-            example: Grand Indonesia
-  schemaCinema:
-    type: object    
     properties:      
-      email:
-        type: string
-        example: aeon@gmail.com      
+      id:
+        type: integer
+        example: 1
       name:
         type: string
-        example: AEON Mall
+        example: Grand Indonesia
       location:
         type: string
-        example: Jl. Kesayangan
+        example: Jl. Sudirman
       maps:
         type: string
         example: maps.google.com/widjwndwi
-      notlp:
+      phone:
         type: string
-        example: '081270826621'
+        example: '0812727282'  
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'      
   requestCinemaAdd:
     type: object
     required:    
-    - email
-    - password
     - name
     - location
     - maps
     - phone
-    properties:      
-      email:
-        type: string
-        example: aeon@gmail.com
-      password:
-        type: string
-        example: al28Sep2118
+    properties:
       name:
         type: string
         example: AEON Mall
@@ -453,18 +636,7 @@ definitions:
         example: maps.google.com/widjwndwi
       phone:
         type: string
-        example: '081270826621'
-  responseCinemaAdd:
-    type: object    
-    properties:
-      code:
-        type: string
-        example: 200
-      message:
-        type: string
-        example: Data Cinema Berhasil Ditambahkan
-      data:
-        $ref: '#/definitions/schemaCinema'
+        example: '081270826621'  
   responseCinemaDetail:
     type: object    
     properties:
@@ -478,76 +650,69 @@ definitions:
         type: object    
         properties:
           cinema:
-            $ref: '#/definitions/schemaCinema'
-          dates:
+            $ref: '#/definitions/responseCinema'
+          schedule:
             type: array
-            items:              
+            items:
               type: object    
               properties:
-                id:
+                scheduleId:
                   type: integer
-                  example: 40000
+                  example: 1
+                movieId:
+                  type: integer
+                  example: 2
+                title:
+                  type: string
+                  example: 'Shang Chi'
+                poster:
+                  type: string
+                  example: 'Shang Chi'
+                duration:
+                  type: string
+                  example: 'Shang Chi'
                 date:
                   type: string
                   example: '2021-02-01'
                 price:
                   type: integer
-                  example: 1
-                movies:
-                  type: array
-                  items:              
-                    type: object    
-                    properties:
-                      info:
-                        $ref: '#/definitions/schemaMovie'
-                      schedule:
-                        type: array
-                        items:              
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            times_movie:
-                              type: string
-                              example: '13.00'
+                  example: 1                
   responseMovie:
     type: object    
-    properties:
-      code:
-        type: string
-        example: 200
-      message:
-        type: string
-        example: List Data Cinema
-      data:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 1
-          title:
-            type: string
-            example: Shang Chi
-          poster:
-            type: string
-            example: link_cdn
-  schemaMovie:
-    type: object
-    required:    
-    - title
-    - poster
-    - release_date
-    - movie_trailer
-    - players
-    - status
     properties:      
+      id:
+        type: integer
+        example: 1
+      title:
+        type: string
+        example: Shang Chi
+      poster:
+        type: string
+        example: link_cdn
+      releaseDate:
+        type: string
+        example: '2020-11-11'
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'      
+  schemaMovie:
+    type: object    
+    properties:
+      id:
+        type: integer
+        example: 1
       title:
         type: string
         example: Spiderman Far From Home
       poster:
         type: string
-        example: link
+        example: link_cdn
+      duration:
+        type: string
+        example: 2h 1min
       release_date:
         type: string
         example: '2021-09-15T11:46:39.000000Z'
@@ -556,10 +721,13 @@ definitions:
         example: youtube.com/jwjndwjndw
       players:
         type: string
-        example: Tom Holland, Zendaya, Chris Evans
-      status:
-        type: integer
-        example: 1
+        example: Tom Holland, Zendaya, Chris Evans      
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'      
   requestMovieAdd:
     type: object
     required:    
@@ -567,8 +735,7 @@ definitions:
     - poster
     - release_date
     - movie_trailer
-    - players
-    - status
+    - players    
     properties:      
       title:
         type: string
@@ -584,10 +751,7 @@ definitions:
         example: youtube.com/jwjndwjndw
       players:
         type: string
-        example: Tom Holland, Zendaya, Chris Evans
-      status:
-        type: integer
-        example: 1
+        example: Tom Holland, Zendaya, Chris Evans      
   responseMovieAdd:
     type: object    
     properties:
@@ -599,28 +763,54 @@ definitions:
         example: Data Cinema Berhasil Ditambahkan
       data:
         $ref: '#/definitions/schemaMovie'
+
+
+
   schemaSchedule:
-    type: object
-    required:    
-    - movie_id
-    - cinema_id
-    - day
-    - price    
+    type: object    
     properties:
+      id:
+        type: integer
+        example: 1
       movie_id:
         type: integer
         example: 1
       cinema_id:
         type: integer
         example: 2
-      day:
+      date:
         type: string
         example: '2021-09-15T11:46:39.000000Z'
       price:
         type: integer
         example: 50000
-  requestScheduleAdd:
-    $ref: '#/definitions/schemaSchedule'
+      createdAt:
+        type: string
+        example: '2020-02-02 18:20:20'
+      updatedAt:
+        type: string
+        example: '2020-02-02 18:20:20'      
+
+  requestScheduleAdd:    
+    type: object
+    required:    
+    - movie_id
+    - cinema_id
+    - date
+    - price
+    properties:      
+      movie_id:
+        type: integer
+        example: 1
+      cinema_id:
+        type: integer
+        example: 2
+      date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      price:
+        type: integer
+        example: 50000
   responseScheduleAdd:
     type: object    
     properties:
@@ -630,6 +820,18 @@ definitions:
       message:
         type: string
         example: Data Schedule Berhasil Ditambahkan
+      data:
+        $ref: '#/definitions/schemaSchedule'
+      date:
+        type: string
+        example: '2021-09-15T11:46:39.000000Z'
+      price:
+        type: integer
+        example: 50000
+
+  responseScheduleDetail:
+    type: object    
+    properties:      
       data:
         $ref: '#/definitions/schemaSchedule'
   schemaBooking:

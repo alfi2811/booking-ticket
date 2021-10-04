@@ -55,6 +55,7 @@ func init() {
 
 func DbMigrate(db *gorm.DB) {
 	db.AutoMigrate(&_userdb.Users{})
+	db.AutoMigrate(&_adminRepository.Admins{})
 	db.AutoMigrate(&_movieRepository.Movies{})
 	db.AutoMigrate(&_cinemaRepository.Cinemas{})
 	db.AutoMigrate(&_scheduleRepository.Schedules{})
