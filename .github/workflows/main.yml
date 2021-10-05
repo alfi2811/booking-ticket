@@ -5,10 +5,12 @@ on:
     branches:
       - 'using-cicd'
       - 'using-docker'
+      - 'development'
   push:
     branches:
       - 'using-cicd'
       - 'using-docker'
+      - 'development'
 jobs:
   unit-test:
     name: "unit test"
