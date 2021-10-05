@@ -1,6 +1,7 @@
 package bookings
 
 import (
+	"booking-ticket/business/qrcode"
 	"context"
 	"errors"
 	"strconv"
@@ -9,12 +10,14 @@ import (
 
 type BookingUsecase struct {
 	Repo           Repository
+	QrCodeRepo     qrcode.Repository
 	contextTimeout time.Duration
 }
 
-func NewBookingUsecase(repo Repository, timeout time.Duration) Usecase {
+func NewBookingUsecase(repo Repository, qrCodeRepo qrcode.Repository, timeout time.Duration) Usecase {
 	return &BookingUsecase{
 		Repo:           repo,
+		QrCodeRepo:     qrCodeRepo,
 		contextTimeout: timeout,
 	}
 }
@@ -26,7 +29,12 @@ func (uc *BookingUsecase) AddBooking(ctx context.Context, domain Domain) (Domain
 	if domain.NumberSeat == "" || domain.Quantity == 0 || domain.TotalPrice == 0 {
 		return Domain{}, errors.New("please input all field")
 	}
-	domain.QrCode = "https://api.qrserver.com/v1/create-qr-code/?data={UserId:" + strconv.Itoa(domain.UserId) + ",TimeScheduleId:" + strconv.Itoa(domain.TimeScheduleId) + "}&size=100x100"
+	dataUser := "{userId:" + strconv.Itoa(domain.UserId) + ",timeScheduleId:" + strconv.Itoa(domain.TimeScheduleId) + "}"
+	dataQr, errQr := uc.QrCodeRepo.GetQrCode(ctx, dataUser)
+	if errQr != nil {
+		return Domain{}, errQr
+	}
+	domain.QrCode = dataQr.QrCode
 	user, err := uc.Repo.AddBooking(ctx, domain)
 
 	if err != nil {

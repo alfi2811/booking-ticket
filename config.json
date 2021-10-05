@@ -20,5 +20,10 @@
   "jwtAdmin" : {
     "secret" : "adminBookingTicket#2811",
     "expired" : 72
+  },
+  "thirdparties" : {
+    "qrcode" : {
+      "api_key": "1534f39ai3H4aE5wETYfhHv6ExFPpfQwr6jfca3u9UV75575c6vTx19m"
+    }    
   }
 }
