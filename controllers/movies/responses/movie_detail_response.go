@@ -13,7 +13,8 @@ type MovieDetailResponse struct {
 	MovieTrailer string    `json:"movieTrailer"`
 	Players      string    `json:"players"`
 	ReleaseDate  time.Time `json:"releaseDate"`
-	Status       int       `json:"status"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
 }
 
 func FromDomainDetail(domain movies.Domain) MovieDetailResponse {
@@ -25,6 +26,7 @@ func FromDomainDetail(domain movies.Domain) MovieDetailResponse {
 		MovieTrailer: domain.MovieTrailer,
 		Players:      domain.Players,
 		ReleaseDate:  domain.ReleaseDate,
-		Status:       domain.Status,
+		CreatedAt:    domain.CreatedAt,
+		UpdatedAt:    domain.UpdatedAt,
 	}
 }

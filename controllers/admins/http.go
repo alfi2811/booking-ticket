@@ -5,9 +5,12 @@ import (
 	"booking-ticket/controllers"
 	"booking-ticket/controllers/admins/requests"
 	"booking-ticket/controllers/admins/responses"
+	"errors"
 	"net/http"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 type AdminController struct {
@@ -28,7 +31,7 @@ func (adminController AdminController) Login(c echo.Context) error {
 	user, error := adminController.AdminUseCase.Login(ctx, adminLogin.Email, adminLogin.Password)
 
 	if error != nil {
-		if error.Error() == "password wrong" {
+		if errors.Is(error, gorm.ErrRecordNotFound) || error.Error() == "password wrong" {
 			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
 		} else if error.Error() == "email empty" || error.Error() == "password empty" {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
@@ -36,7 +39,7 @@ func (adminController AdminController) Login(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainLogin(user))
 }
 
 func (adminController AdminController) Register(c echo.Context) error {
@@ -46,25 +49,30 @@ func (adminController AdminController) Register(c echo.Context) error {
 	ctx := c.Request().Context()
 	admin, error := adminController.AdminUseCase.Register(ctx, adminRegister.ToDomain())
 
+	driverErr, ok := error.(*mysql.MySQLError)
+	if !ok {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
+	}
+
 	if error != nil {
-		if error.Error() == "password wrong" {
-			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
+		if driverErr.Number == 1062 {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, errors.New("email already exist"))
 		} else if error.Error() == "please input all field" {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomainAdd(admin))
+	return controllers.NewSuccesResponse(c, responses.FromDomain(admin))
 }
 
 func (adminController AdminController) GetAdmin(c echo.Context) error {
 	ctx := c.Request().Context()
-	user, error := adminController.AdminUseCase.GetAdmin(ctx)
+	admin, error := adminController.AdminUseCase.GetAdmin(ctx)
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, user)
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(admin))
 }

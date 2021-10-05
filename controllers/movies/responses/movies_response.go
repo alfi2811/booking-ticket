@@ -8,9 +8,10 @@ import (
 type MovieResponse struct {
 	ID          int       `json:"id" `
 	Title       string    `json:"title"`
-	Poster      string    `json:"Poster"`
+	Poster      string    `json:"poster"`
 	ReleaseDate time.Time `json:"releaseDate"`
-	Status      int       `json:"status"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 func FromDomain(domain movies.Domain) MovieResponse {
@@ -19,7 +20,8 @@ func FromDomain(domain movies.Domain) MovieResponse {
 		Title:       domain.Title,
 		Poster:      domain.Poster,
 		ReleaseDate: domain.ReleaseDate,
-		Status:      domain.Status,
+		CreatedAt:   domain.CreatedAt,
+		UpdatedAt:   domain.UpdatedAt,
 	}
 }
 
