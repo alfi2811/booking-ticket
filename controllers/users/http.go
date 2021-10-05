@@ -31,9 +31,7 @@ func (userController UserController) Login(c echo.Context) error {
 	user, error := userController.UserUseCase.Login(ctx, userLogin.Email, userLogin.Password)
 
 	if error != nil {
-		if errors.Is(error, gorm.ErrRecordNotFound) {
-			return controllers.NewErrorResponse(c, http.StatusNoContent, error)
-		} else if error.Error() == "password wrong" {
+		if errors.Is(error, gorm.ErrRecordNotFound) || error.Error() == "password wrong" {
 			return controllers.NewErrorResponse(c, http.StatusForbidden, error)
 		} else if error.Error() == "email empty" || error.Error() == "password empty" {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
