@@ -1,0 +1,62 @@
+name: Do Unit Testing
+
+on:
+  pull_request:
+    branches:      
+      - 'development'
+  push:
+    branches:      
+      - 'development'
+jobs:
+  unit-test:
+    name: "unit test"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: running unit test
+      run: go test ./... -cover
+  build-push-docker:
+    name: "Build docker dan push to registry"
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+    - uses: actions/checkout@v2
+    - name: build docker
+      run: docker build -t alfinst/booking_ticket:1.0.0 .
+    - name: login registry docker hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: push image to registry docker hub
+      run: docker push alfinst/booking_ticket:1.0.0
+  deployment-ec2:
+    name: Deploy to ec2
+    runs-on: ubuntu-latest
+    needs: build-push-docker
+    steps:
+      - uses: actions/checkout@v2
+      - name: configuration SSH
+        env:
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/alterra_academy_aws.pem
+          chmod 400 ~/.ssh/alterra_academy_aws.pem
+          cat >>~/.ssh/config <<END
+          Host development
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/alterra_academy_aws.pem
+            StrictHostKeyChecking=no
+          END
+      - name: Connect EC2 & Remove All container & pull from registry & start
+        run: ssh development 'docker rm -f $(docker ps -a -q) && docker pull alfinst/booking_ticket:1.0.0 && docker run -d -p 8000:8000 --name booking_ticket alfinst/booking_ticket:1.0.0'
+    
+
