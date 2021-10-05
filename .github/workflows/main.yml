@@ -2,14 +2,10 @@ name: Do Unit Testing
 
 on:
   pull_request:
-    branches:
-      - 'using-cicd'
-      - 'using-docker'
+    branches:      
       - 'development'
   push:
-    branches:
-      - 'using-cicd'
-      - 'using-docker'
+    branches:      
       - 'development'
 jobs:
   unit-test:
