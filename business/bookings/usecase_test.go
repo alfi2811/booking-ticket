@@ -3,6 +3,8 @@ package bookings_test
 import (
 	"booking-ticket/business/bookings"
 	_mockRepository "booking-ticket/business/bookings/mocks"
+	"booking-ticket/business/qrcode"
+	_mockQrcodeRepository "booking-ticket/business/qrcode/mocks"
 	"context"
 	"testing"
 	"time"
@@ -12,11 +14,13 @@ import (
 )
 
 var bookingRepository _mockRepository.Repository
+var qrCodeRepository _mockQrcodeRepository.Repository
 var bookingService bookings.Usecase
 var bookingDomain bookings.Domain
+var qrCodeDomain qrcode.Domain
 
 func setup() {
-	bookingService = bookings.NewBookingUsecase(&bookingRepository, time.Hour*1)
+	bookingService = bookings.NewBookingUsecase(&bookingRepository, &qrCodeRepository, time.Hour*1)
 	bookingDomain = bookings.Domain{
 		ID:             1,
 		UserId:         1,
@@ -26,6 +30,9 @@ func setup() {
 		TotalPrice:     1,
 		Status:         1,
 	}
+	qrCodeDomain = qrcode.Domain{
+		QrCode: "data:image.png",
+	}
 }
 
 func TestAddBooking(t *testing.T) {
@@ -33,6 +40,9 @@ func TestAddBooking(t *testing.T) {
 	bookingRepository.On("AddBooking",
 		mock.Anything,
 		mock.AnythingOfType("Domain")).Return(bookings.Domain{}, nil).Once()
+	qrCodeRepository.On("GetQrCode",
+		mock.Anything,
+		mock.AnythingOfType("string")).Return(qrCodeDomain, nil).Once()
 
 	t.Run("Test Case 1 | Valid Add Booking", func(t *testing.T) {
 		_, err := bookingService.AddBooking(context.Background(), bookingDomain)
