@@ -27,7 +27,7 @@ func (uc *BookingUsecase) AddBooking(ctx context.Context, domain Domain) (Domain
 		return Domain{}, errors.New("please input user or time schedule id")
 	}
 	if domain.NumberSeat == "" || domain.Quantity == 0 || domain.TotalPrice == 0 {
-		return Domain{}, errors.New("please input all field")
+		return Domain{}, errors.New("please input all field ")
 	}
 	dataUser := "{userId:" + strconv.Itoa(domain.UserId) + ",timeScheduleId:" + strconv.Itoa(domain.TimeScheduleId) + "}"
 	dataQr, errQr := uc.QrCodeRepo.GetQrCode(ctx, dataUser)

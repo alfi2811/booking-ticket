@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - 'using-cicd'
-      - 'using-docer'
+      - 'using-docker'
   push:
     branches:
       - 'using-cicd'
