@@ -4,9 +4,11 @@ on:
   pull_request:
     branches:
       - 'using-cicd'
+      - 'using-docer'
   push:
     branches:
       - 'using-cicd'
+      - 'using-docker'
 jobs:
   unit-test:
     name: "unit test"

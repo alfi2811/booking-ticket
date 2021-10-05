@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type AdminAddResponse struct {
+type AdminResponse struct {
 	ID        int       `json:"id"`
 	Email     string    `json:"email"`
 	Fullname  string    `json:"fullname"`
@@ -13,12 +13,20 @@ type AdminAddResponse struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func FromDomainAdd(domain admins.Domain) AdminAddResponse {
-	return AdminAddResponse{
+func FromDomain(domain admins.Domain) AdminResponse {
+	return AdminResponse{
 		ID:        domain.ID,
 		Fullname:  domain.Fullname,
 		Email:     domain.Email,
 		CreatedAt: domain.CreatedAt,
 		UpdatedAt: domain.UpdatedAt,
 	}
+}
+
+func FromListDomain(data []admins.Domain) (result []AdminResponse) {
+	result = []AdminResponse{}
+	for _, admin := range data {
+		result = append(result, FromDomain(admin))
+	}
+	return
 }

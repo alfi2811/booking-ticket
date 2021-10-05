@@ -36,7 +36,7 @@ func (adminController AdminController) Login(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomain(user))
+	return controllers.NewSuccesResponse(c, responses.FromDomainLogin(user))
 }
 
 func (adminController AdminController) Register(c echo.Context) error {
@@ -55,16 +55,16 @@ func (adminController AdminController) Register(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, responses.FromDomainAdd(admin))
+	return controllers.NewSuccesResponse(c, responses.FromDomain(admin))
 }
 
 func (adminController AdminController) GetAdmin(c echo.Context) error {
 	ctx := c.Request().Context()
-	user, error := adminController.AdminUseCase.GetAdmin(ctx)
+	admin, error := adminController.AdminUseCase.GetAdmin(ctx)
 
 	if error != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, user)
+	return controllers.NewSuccesResponse(c, responses.FromListDomain(admin))
 }
