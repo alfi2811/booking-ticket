@@ -66,7 +66,7 @@ func DbMigrate(db *gorm.DB) {
 }
 
 func main() {
-	// init koneksi databse
+	// initialisasi koneksi ke database
 	configDB := _mysqlDriver.ConfigDB{
 		DB_Username: viper.GetString(`database.user`),
 		DB_Password: viper.GetString(`database.pass`),

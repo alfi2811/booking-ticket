@@ -23,7 +23,6 @@ func NewUserUsecase(repo Repository, timeout time.Duration, configJWT middleware
 	}
 }
 
-// core bisinis login
 func (uc *UserUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
 	if email == "" {
 		return Domain{}, errors.New("email empty")

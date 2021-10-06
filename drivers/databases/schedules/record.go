@@ -11,9 +11,8 @@ import (
 )
 
 type Schedules struct {
-	ID      int `gorm:"primaryKey"`
-	MovieId int
-	// Movie moviesDB
+	ID           int `gorm:"primaryKey"`
+	MovieId      int
 	CinemaId     int
 	Date         time.Time
 	Price        int
