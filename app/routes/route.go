@@ -66,10 +66,10 @@ func (cl *ControllerList) RouteTimeSchedule(e *echo.Group) {
 }
 
 func (cl *ControllerList) RouteBooking(e *echo.Group) {
-	e.GET("booking", cl.BookingController.ListBooking)
-	e.GET("booking/:id", cl.BookingController.DetailBooking)
-	e.GET("booking/user/:id", cl.BookingController.ListBookingUser)
-	e.POST("booking", cl.BookingController.AddBooking)
+	e.GET("booking", cl.BookingController.ListBooking, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("booking/:id", cl.BookingController.DetailBooking, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("booking/user/:id", cl.BookingController.ListBookingUser, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("booking", cl.BookingController.AddBooking, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func RoleValidation(role string, userControler users.UserController) echo.MiddlewareFunc {
