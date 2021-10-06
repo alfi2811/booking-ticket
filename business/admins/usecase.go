@@ -29,7 +29,7 @@ func (uc *AdminUsecase) Login(ctx context.Context, email string, password string
 		return Domain{}, errors.New("email empty")
 	}
 	if password == "" {
-		return Domain{}, errors.New("password empty")
+		return Domain{}, errors.New("password empty ")
 	}
 
 	user, err := uc.Repo.Login(ctx, email, password)
