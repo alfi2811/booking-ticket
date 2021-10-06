@@ -85,5 +85,5 @@ func (userController UserController) ListUserBooking(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
 	}
 
-	return controllers.NewSuccesResponse(c, user)
+	return controllers.NewSuccesResponse(c, responses.FromListUserBookDomain(user))
 }
