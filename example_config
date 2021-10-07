@@ -1,0 +1,29 @@
+{
+  "debug": true,
+  "server": {
+    "address": ""
+  },
+  "context":{
+    "timeout":2
+  },
+  "database": {
+      "host": "",
+      "port": "",
+      "user": "",
+      "pass": "",
+      "name": ""
+  },
+  "jwt" : {
+    "secret" : "",
+    "expired" : 72
+  },
+  "jwtAdmin" : {
+    "secret" : "",
+    "expired" : 72
+  },
+  "thirdparties" : {
+    "qrcode" : {
+      "api_key": ""
+    }    
+  }
+}
