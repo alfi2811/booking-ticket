@@ -44,32 +44,32 @@ func (cl *ControllerList) RouteAdmins(e *echo.Group) {
 }
 
 func (cl *ControllerList) RouteMovies(e *echo.Group) {
-	e.GET("movie", cl.MovieController.ListMovie, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("movie/:id", cl.MovieController.DetailMovie, middleware.JWTWithConfig(cl.JwtConfig))
-	e.POST("movie", cl.MovieController.AddMovie, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.GET("movies", cl.MovieController.ListMovie, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("movies/:id", cl.MovieController.DetailMovie, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("movies", cl.MovieController.AddMovie, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func (cl *ControllerList) RouteCinemas(e *echo.Group) {
-	e.GET("cinema", cl.CinemaController.ListCinema, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("cinema/:id", cl.CinemaController.CinemaDetail, middleware.JWTWithConfig(cl.JwtConfig))
-	e.POST("cinema", cl.CinemaController.AddCinema, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.GET("cinemas", cl.CinemaController.ListCinema, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("cinemas/:id", cl.CinemaController.CinemaDetail, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("cinemas", cl.CinemaController.AddCinema, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func (cl *ControllerList) RouteSchedule(e *echo.Group) {
-	e.GET("schedule", cl.ScheduleController.ListSchedule)
-	e.GET("schedule/:id", cl.ScheduleController.DetailTimeSchedule)
-	e.POST("schedule", cl.ScheduleController.AddSchedule, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.GET("schedules", cl.ScheduleController.ListSchedule)
+	e.GET("schedules/:id", cl.ScheduleController.DetailTimeSchedule)
+	e.POST("schedules", cl.ScheduleController.AddSchedule, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func (cl *ControllerList) RouteTimeSchedule(e *echo.Group) {
-	e.POST("schedule/time", cl.TimeScheduleController.AddScheduleTime, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.POST("schedules/time", cl.TimeScheduleController.AddScheduleTime, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func (cl *ControllerList) RouteBooking(e *echo.Group) {
-	e.GET("booking", cl.BookingController.ListBooking, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("booking/:id", cl.BookingController.DetailBooking, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("booking/user/:id", cl.BookingController.ListBookingUser, middleware.JWTWithConfig(cl.JwtConfig))
-	e.POST("booking", cl.BookingController.AddBooking, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.GET("bookings", cl.BookingController.ListBooking, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("bookings/:id", cl.BookingController.DetailBooking, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("bookings/user/:id", cl.BookingController.ListBookingUser, middleware.JWTWithConfig(cl.JwtConfig))
+	e.POST("bookings", cl.BookingController.AddBooking, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
 func RoleValidation(role string, userControler users.UserController) echo.MiddlewareFunc {
