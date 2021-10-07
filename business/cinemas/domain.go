@@ -6,13 +6,13 @@ import (
 )
 
 type CinemaDetail struct {
-	Id       string    `json:"scheduleId"`
-	IdMovie  string    `json:"movieId"`
-	Title    string    `json:"title"`
-	Poster   string    `json:"poster"`
-	Duration string    `json:"duration"`
-	Date     time.Time `json:"date"`
-	Price    int       `json:"price"`
+	IdSchedule string    `json:"scheduleId"`
+	IdMovie    string    `json:"movieId"`
+	Title      string    `json:"title"`
+	Poster     string    `json:"poster"`
+	Duration   string    `json:"duration"`
+	Date       time.Time `json:"date"`
+	Price      int       `json:"price"`
 }
 
 type Domain struct {

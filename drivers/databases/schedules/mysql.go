@@ -48,7 +48,7 @@ func (rep *MysqlSchedulesRepository) DetailTimeSchedule(ctx context.Context, idS
 	var timeDB []timeSchedules.TimeSchedules
 	resultTime := rep.Conn.Where("schedule_id = ?", idSchedule).Find(&timeDB)
 
-	result := rep.Conn.Model(&ListSchedule).Select("schedules.id, cinemas.name, cinemas.maps, cinemas.phone, movies.title, movies.poster, movies.duration, schedules.date, schedules.price").Joins("left join movies on schedules.movie_id = movies.id").Joins("JOIN cinemas on schedules.cinema_id = cinemas.id").Where("schedules.id = ?", idSchedule).Find(&scheduleData)
+	result := rep.Conn.Model(&ListSchedule).Select("schedules.id, cinemas.name, cinemas.maps, cinemas.phone, movies.title, movies.poster, movies.duration, schedules.date, schedules.price, schedules.created_at, schedules.updated_at").Joins("left join movies on schedules.movie_id = movies.id").Joins("JOIN cinemas on schedules.cinema_id = cinemas.id").Where("schedules.id = ?", idSchedule).Find(&scheduleData)
 
 	if result.Error != nil && resultTime.Error != nil {
 		return schedules.Domain{}, result.Error

@@ -23,14 +23,16 @@ type Schedules struct {
 }
 
 type ListSchedules struct {
-	ID       int
-	Title    string
-	Poster   string
-	Duration string
-	Name     string
-	Maps     string
-	Date     time.Time
-	Price    int
+	ID        int
+	Title     string
+	Poster    string
+	Duration  string
+	Name      string
+	Maps      string
+	Date      time.Time
+	Price     int
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func (schedule *Schedules) ToDomain() schedules.Domain {
@@ -59,11 +61,13 @@ func (schedule *ListSchedules) ToDomainJoin() schedules.Domain {
 	}
 
 	return schedules.Domain{
-		ID:     schedule.ID,
-		Movie:  Movie,
-		Cinema: Cinema,
-		Date:   schedule.Date,
-		Price:  schedule.Price,
+		ID:        schedule.ID,
+		Movie:     Movie,
+		Cinema:    Cinema,
+		Date:      schedule.Date,
+		Price:     schedule.Price,
+		CreatedAt: schedule.CreatedAt,
+		UpdatedAt: schedule.UpdatedAt,
 	}
 }
 

@@ -59,7 +59,7 @@ func FromListDetail(data []cinemas.CinemaDetail) (result []DetailResponse) {
 
 func FromDetail(domain cinemas.CinemaDetail) DetailResponse {
 	return DetailResponse{
-		Id:       domain.Id,
+		Id:       domain.IdSchedule,
 		IdMovie:  domain.IdMovie,
 		Title:    domain.Title,
 		Poster:   domain.Poster,
