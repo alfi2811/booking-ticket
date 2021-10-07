@@ -20,7 +20,7 @@ func NewMovieUsecase(repo Repository, timeout time.Duration) Usecase {
 
 func (uc *MovieUsecase) AddMovie(ctx context.Context, domain Domain) (Domain, error) {
 	if domain.Title == "" || domain.Poster == "" || domain.Duration == "" || domain.Players == "" || domain.MovieTrailer == "" {
-		return Domain{}, errors.New("please input all field ")
+		return Domain{}, errors.New("please input all")
 	}
 	movie, err := uc.Repo.AddMovie(ctx, domain)
 
