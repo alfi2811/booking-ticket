@@ -2,10 +2,12 @@ name: Do Unit Testing
 
 on:
   pull_request:
-    branches:      
+    branches:
+      - 'master'      
       - 'development'      
   push:
     branches:      
+      - 'master'      
       - 'development'      
 jobs:
   unit-test:
