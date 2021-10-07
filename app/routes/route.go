@@ -69,7 +69,7 @@ func (cl *ControllerList) RouteBooking(e *echo.Group) {
 	e.GET("bookings", cl.BookingController.ListBooking, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("bookings/:id", cl.BookingController.DetailBooking, middleware.JWTWithConfig(cl.JwtConfig))
 	e.GET("bookings/user/:id", cl.BookingController.ListBookingUser, middleware.JWTWithConfig(cl.JwtConfig))
-	e.POST("bookings", cl.BookingController.AddBooking, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
+	e.POST("bookings", cl.BookingController.AddBooking, middleware.JWTWithConfig(cl.JwtConfig))
 }
 
 func RoleValidation(role string, userControler users.UserController) echo.MiddlewareFunc {
