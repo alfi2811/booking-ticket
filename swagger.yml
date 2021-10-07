@@ -17,11 +17,13 @@ tags:
   description: Operations available to regular users
 - name: admins
   description: Operations available to regular admins
-- name: cinema
+- name: cinemas
   description: Operations available to regular users
-- name: movie
+- name: movies
   description: Operations available to regular users
-- name: schedule
+- name: schedules
+  description: Operations available to regular users
+- name: bookings
   description: Operations available to regular users
 
 paths:
@@ -207,7 +209,7 @@ paths:
       tags:
       - admins
       summary: registration for admin
-      operationId: registUser
+      operationId: registAdmin
       description: |
         By accessing this, user data will add in table users
       produces:
@@ -243,7 +245,7 @@ paths:
   /cinemas:
     get:
       tags:
-      - cinema
+      - cinemas
       summary: list cinema
       operationId: listCinema
       description: |
@@ -276,8 +278,8 @@ paths:
             $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
-      - cinema
-      summary: list cinema
+      - cinemas
+      summary: add cinema
       operationId: addCinema
       description: |
         By accessing this, will show list of cinema in booking ticket
@@ -286,7 +288,7 @@ paths:
       parameters:
       - in: body
         name: user
-        description: user data to add
+        description: cinema data to add
         schema:
           $ref: '#/definitions/requestCinemaAdd'
       responses:
@@ -310,10 +312,10 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/internalServerErrResponse'
-  /cinemas/{cinemaid}:
+  /cinemas/{cinemaId}:
     get:
       tags:
-      - cinema
+      - cinemas
       summary: list movie in one cinema
       operationId: listCinemaDetail
       description: |
@@ -328,7 +330,7 @@ paths:
           type: string
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: list of movie in cinema that regist in booking ticket
           schema:
             type: object    
             properties:      
@@ -352,7 +354,7 @@ paths:
   /movie:
     get:
       tags:
-      - movie
+      - movies
       summary: list movie
       operationId: listMovie
       description: |
@@ -361,7 +363,7 @@ paths:
       - application/json      
       responses:
         200:
-          description: list of users that regist in booking ticket          
+          description: list of movie that regist in booking ticket          
           schema:
             type: object    
             properties:      
@@ -384,7 +386,7 @@ paths:
             $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
-      - movie
+      - movies
       summary: add movie
       operationId: addMovie
       description: |
@@ -394,12 +396,12 @@ paths:
       parameters:
       - in: body
         name: user
-        description: user data to add
+        description: movie data to add
         schema:
           $ref: '#/definitions/requestMovieAdd'
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: response create movie in booking ticket
           schema:
             type: object    
             properties:      
@@ -418,19 +420,25 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/internalServerErrResponse'
-  /movie/{movieid}:
+  /movie/{movieId}:
     get:
       tags:
-      - movie
+      - movies
       summary: detail one movie
       operationId: detailMovie
       description: |
         By accessing this, will show detail of movie in booking ticket
       produces:
       - application/json      
+      parameters:
+        - in: path
+          name: movieId
+          description: example =  /movie/2
+          required: true
+          type: string
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: detail movie in booking ticket
           schema:
             type: object    
             properties:      
@@ -452,7 +460,7 @@ paths:
   /schedule:
     get:
       tags:
-      - schedule
+      - schedules
       summary: list schedule
       operationId: listSchedule
       description: |
@@ -461,7 +469,7 @@ paths:
       - application/json      
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: list of schedule that regist in booking ticket
           schema:
             type: object    
             properties:      
@@ -484,11 +492,11 @@ paths:
             $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
-      - schedule
-      summary: list cinema
-      operationId: listCinema
+      - schedules
+      summary: add schedule
+      operationId: listSchedule
       description: |
-        By accessing this, will show list of cinema in booking ticket
+        By accessing this, will show add schedule in booking ticket
       produces:
       - application/json
       parameters:
@@ -499,7 +507,7 @@ paths:
           $ref: '#/definitions/requestScheduleAdd'
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: response create schedule in booking ticket
           schema:
             type: object    
             properties:      
@@ -521,7 +529,7 @@ paths:
   /schedule/{scheduleId}:
     get:
       tags:
-      - schedule
+      - schedules
       summary: detail schedule
       operationId: detailSchedule
       description: |
@@ -552,7 +560,7 @@ paths:
   /schedule/time:
     post:
       tags:
-      - schedule
+      - schedules
       summary: create time schedule
       operationId: timeSchedule
       description: |
@@ -567,7 +575,7 @@ paths:
           $ref: '#/definitions/requestScheduleTimeAdd'             
       responses:
         200:
-          description: list of users that regist in booking ticket
+          description: response create time schedule in booking ticket
           schema:
             type: object    
             properties:      
@@ -589,7 +597,7 @@ paths:
   /booking:
     get:
       tags:
-      - schedule
+      - bookings
       summary: list booking
       operationId: listBooking
       description: |
@@ -621,7 +629,7 @@ paths:
             $ref: '#/definitions/internalServerErrArrayResponse'
     post:
       tags:
-      - schedule
+      - bookings
       summary: add booking ticket
       operationId: addBooking
       description: |
@@ -658,7 +666,7 @@ paths:
   /booking/{bookingId}:
     get:
       tags:
-      - schedule
+      - bookings
       summary: Detail booking
       operationId: detailBooking
       description: |
@@ -691,7 +699,7 @@ paths:
   /booking/user/{userId}:
     get:
       tags:
-      - schedule
+      - bookings
       summary: List User booking
       operationId: listUserBooking
       description: |
