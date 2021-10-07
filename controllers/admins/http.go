@@ -8,7 +8,6 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -49,15 +48,8 @@ func (adminController AdminController) Register(c echo.Context) error {
 	ctx := c.Request().Context()
 	admin, error := adminController.AdminUseCase.Register(ctx, adminRegister.ToDomain())
 
-	driverErr, ok := error.(*mysql.MySQLError)
-	if !ok {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
-	}
-
 	if error != nil {
-		if driverErr.Number == 1062 {
-			return controllers.NewErrorResponse(c, http.StatusBadRequest, errors.New("email already exist"))
-		} else if error.Error() == "please input all field" {
+		if error.Error() == "please input all field" {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, error)
 		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, error)
