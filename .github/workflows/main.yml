@@ -3,10 +3,12 @@ name: Do Unit Testing
 on:
   pull_request:
     branches:      
-      - 'development'      
+      - 'development'
+      - 'feature-booking'
   push:
     branches:      
-      - 'development'      
+      - 'development'
+      - 'feature-booking'
 jobs:
   unit-test:
     name: "unit test"
