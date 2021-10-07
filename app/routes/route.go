@@ -45,7 +45,7 @@ func (cl *ControllerList) RouteAdmins(e *echo.Group) {
 
 func (cl *ControllerList) RouteMovies(e *echo.Group) {
 	e.GET("movies", cl.MovieController.ListMovie, middleware.JWTWithConfig(cl.JwtConfig))
-	e.GET("movies/:id", cl.MovieController.DetailMovie, middleware.JWTWithConfig(cl.JwtConfig))
+	e.GET("movie/:id", cl.MovieController.DetailMovie, middleware.JWTWithConfig(cl.JwtConfig))
 	e.POST("movies", cl.MovieController.AddMovie, middleware.JWTWithConfig(cl.JwtConfig), RoleValidationAdmin())
 }
 
