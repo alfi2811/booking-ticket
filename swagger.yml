@@ -139,7 +139,7 @@ paths:
       summary: list admins
       operationId: listAdmins
       description: |
-        By accessing this, will show list of aadmins in booking ticket
+        By accessing this, will show list of admins in booking ticket
       produces:
       - application/json      
       responses:
@@ -169,16 +169,16 @@ paths:
     post:
       tags:
       - admins
-      summary: login for users
-      operationId: loginUsers
+      summary: login for admin
+      operationId: loginAdmin
       description: |
         for accessing to booking ticket
       produces:
       - application/json      
       parameters:
       - in: body
-        name: userData
-        description: user data to check
+        name: adminData
+        description: admin data to check
         schema:
           $ref: '#/definitions/requestAdminLogin'
       responses:
@@ -206,7 +206,7 @@ paths:
     post:
       tags:
       - admins
-      summary: registration for user
+      summary: registration for admin
       operationId: registUser
       description: |
         By accessing this, user data will add in table users

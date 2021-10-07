@@ -23,7 +23,6 @@ func NewAdminUsecase(repo Repository, timeout time.Duration, configJWT middlewar
 	}
 }
 
-// core bisinis login
 func (uc *AdminUsecase) Login(ctx context.Context, email string, password string) (Domain, error) {
 	if email == "" {
 		return Domain{}, errors.New("email empty")

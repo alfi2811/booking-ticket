@@ -2,6 +2,8 @@ package main
 
 import (
 	"booking-ticket/app/routes"
+	_qrCodeRepository "booking-ticket/drivers/thirdparties/qrcode"
+
 	_adminUsecase "booking-ticket/business/admins"
 	_adminController "booking-ticket/controllers/admins"
 	_adminRepository "booking-ticket/drivers/databases/admins"
@@ -64,7 +66,7 @@ func DbMigrate(db *gorm.DB) {
 }
 
 func main() {
-	// init koneksi databse
+	// initialisasi koneksi ke database
 	configDB := _mysqlDriver.ConfigDB{
 		DB_Username: viper.GetString(`database.user`),
 		DB_Password: viper.GetString(`database.pass`),
@@ -88,6 +90,12 @@ func main() {
 		SecretJWT:       viper.GetString(`jwtAdmin.secret`),
 		ExpiresDuration: viper.GetInt(`jwtAdmin.expired`),
 	}
+
+	configQrCode := _qrCodeRepository.QrcodeAPI{
+		ApiKey: viper.GetString("thirdparties.qrcode.api_key"),
+	}
+
+	qrCodeRepository := _qrCodeRepository.NewQrCodeAPI(configQrCode)
 
 	adminRepository := _adminRepository.NewMysqlAdminRepository(Conn)
 	adminUseCase := _adminUsecase.NewAdminUsecase(adminRepository, timeoutContext, configJWT)
@@ -114,7 +122,7 @@ func main() {
 	timeScheduleController := _timeScheduleController.NewTimeScheduleController(timeScheduleUseCase)
 
 	bookingRepository := _bookingRepository.NewMysqlBookingsRepository(Conn)
-	bookingUseCase := _bookingUsecase.NewBookingUsecase(bookingRepository, timeoutContext)
+	bookingUseCase := _bookingUsecase.NewBookingUsecase(bookingRepository, qrCodeRepository, timeoutContext)
 	bookingController := _bookingController.NewBookingController(bookingUseCase)
 
 	routesInit := routes.ControllerList{

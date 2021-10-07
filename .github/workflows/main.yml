@@ -3,12 +3,12 @@ name: Do Unit Testing
 on:
   pull_request:
     branches:
-      - 'using-cicd'
-      - 'documentation'
+      - 'master'      
+      - 'development'      
   push:
-    branches:
-      - 'using-cicd'
-      - 'documentation'
+    branches:      
+      - 'master'      
+      - 'development'      
 jobs:
   unit-test:
     name: "unit test"
@@ -27,6 +27,13 @@ jobs:
     needs: unit-test
     steps:
     - uses: actions/checkout@v2
+    - name: create file config
+      env:
+        CONFIG: ${{ secrets.CONFIG }}
+      run: |
+        touch config.json
+        echo "$CONFIG" > config.json
+        chmod 777 config.json
     - name: build docker
       run: docker build -t alfinst/booking_ticket:1.0.0 .
     - name: login registry docker hub
@@ -37,7 +44,7 @@ jobs:
     - name: push image to registry docker hub
       run: docker push alfinst/booking_ticket:1.0.0
   deployment-ec2:
-    name: Deploy to ec2
+    name: Deploy to ec2 with pull registry in docker hub
     runs-on: ubuntu-latest
     needs: build-push-docker
     steps:
